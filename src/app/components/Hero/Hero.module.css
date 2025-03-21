@@ -1,0 +1,22 @@
+
+.hero_contain{
+    position: relative;
+    height: 350px;
+    display: flex;
+    width: 80%;
+    max-width: 1080px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 48px;
+    margin-bottom: 48px;
+}
+.image_contain{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    border-radius: 12%;
+    overflow: hidden;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3), 
+    -5px -5px 15px rgba(255, 255, 255, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}

@@ -1,0 +1,52 @@
+.slider_container {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    display: flex;
+    width: 80%;
+    max-width: 1080px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .slider {
+    display: flex;
+    gap: 2rem;
+    white-space: nowrap;
+    animation: slideAnimation 15s linear infinite;
+  }
+  
+  .slide_item {
+    min-width: 200px;
+    text-align: center;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    opacity: 0.6; /* Default opacity for non-hovered items */
+  }
+  
+  .slide_item:hover {
+    transform: scale(1.05);
+    opacity: 1; /* Ensure full opacity for hovered item */
+  }
+  
+  /* Keep the non-hovered items dimmed while allowing the hover effect to not interrupt the animation */
+  .slider_container:hover .slide_item:not(:hover) {
+    opacity: 0.6;
+  }
+  
+  /* Define the animation for continuous sliding */
+  @keyframes slideAnimation {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%); /* Ensures smooth continuous loop */
+    }
+  }
+  
+  /* Ensure the slider stops completely when hovering */
+  .slider_container:hover .slider {
+    animation-play-state: paused;
+  }
+  
+  
+  

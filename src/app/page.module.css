@@ -1,4 +1,22 @@
-
+.separator{
+  background-color: #f0f0f0;
+  padding: 48px 0;
+}
+.pitch{
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  max-width: 1080px;
+  width: 80%;
+  margin: 0% auto;
+  gap: 3em;
+  margin-top: 48px;
+}
+.callToAction{
+  display: flex;
+  justify-content: center;
+  margin-top: 48px;
+  margin-bottom: 48px;
+}
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
 
@@ -12,10 +30,6 @@
 @media (max-width: 700px) {
 
   }
-
-
-  
-
 
 /* Tablet and Smaller Desktop */
 @media (min-width: 701px) and (max-width: 1120px) {

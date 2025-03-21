@@ -1,11 +1,11 @@
 import React from 'react'
 import styles from './SubHeading.module.css'
-function SubHeading() {
+function SubHeading({heading,msg}) {
   return (
-    <div>
-       <h2> SubHeading</h2>
-       <p>breif history</p>
-    </div>
+    <section className={styles.sub_heading_contain}>
+       <h2> {heading}</h2>
+       <p>{msg}</p>
+    </section>
   )
 }
 

@@ -1,0 +1,55 @@
+.sponsorsPage {
+    padding: 40px;
+    text-align: center;
+    background-color: #f8f9fa;
+  }
+  
+  .pageTitle {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    color: #333;
+  }
+  
+  .sponsorGrid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    width: 80%;
+    max-width: 1080px;
+    margin-left: auto;
+    margin-right: auto;
+    gap: 2em;
+  }
+  
+  .sponsorCard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.291);
+    padding: 20px;
+    transition: transform 0.3s ease-in-out;
+    text-decoration: none;
+  }
+  
+  .sponsorCard:hover {
+    transform: scale(1.05);
+  }
+  
+  .cardContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .sponsorLogo {
+    max-width: 150px;
+    margin-bottom: 20px;
+  }
+  
+  .sponsorName {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+  }

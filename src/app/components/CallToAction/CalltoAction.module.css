@@ -1,0 +1,29 @@
+/* CalltoAction.module.css */
+.btn {
+    background-color: #3498db;  /* Blue background */
+    color: white;  /* White text */
+    padding: 15px 30px;  /* Button padding */
+    border: none;
+    border-radius: 50px;  /* Rounded corners */
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 1.25rem;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease;
+    transform-style: preserve-3d;  /* Enables 3D transforms */
+    perspective: 1000px;  /* Creates depth for 3D effect */
+  }
+  
+  .link {
+    color: inherit; /* Inherits color from the parent (for consistency) */
+    text-decoration: none; /* No underline */
+    display: inline-block;
+  }
+  
+  .btn:hover {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8); /* Neon glow on hover */
+  }
+  
+  

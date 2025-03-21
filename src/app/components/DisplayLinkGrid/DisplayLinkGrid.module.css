@@ -1,0 +1,62 @@
+.bento{
+  
+    width: 80%;
+    max-width: 1080px;
+    margin: 48px auto;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-template-rows: repeat(6,4em);
+    gap: 2em;
+    grid-template-areas: 
+    " item1 item1 item2"
+    " item1 item1 item2"
+    " item3 item4 item2"
+    " item3 item4 item6"
+    " item5 item5 item6"
+    " item5 item5 item6";
+    }
+.box{
+    position: relative;
+    background: rgba(104, 99, 99, 0.202); /* Transparent background */
+    backdrop-filter: blur(10px); /* Blurred glass effect */
+    -webkit-backdrop-filter: blur(10px); /* Ensures compatibility */
+    border-radius: 12px; /* Soft rounded corners */
+    border: 1px solid rgba(2, 2, 2, 0.3); /* Subtle border */
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2); /* Depth effect */
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white; /* Adjust text color for contrast */
+    font-weight: bold;
+    text-align: center;
+    border-radius: 12%;
+    overflow: hidden;
+}
+.box1{
+    grid-area: item1;
+}
+.box2{
+    grid-area: item2;
+}
+.box3{
+    grid-area: item3;
+}
+.box4{
+    grid-area: item4;
+}
+.box5{
+    grid-area: item5;
+}
+.box6{
+    grid-area: item6;
+}
+.title{
+    position: relative;
+    font-size: 32px;
+    color: #ffffff;
+    z-index: 2;
+}
+.link{
+    text-decoration: none;
+}

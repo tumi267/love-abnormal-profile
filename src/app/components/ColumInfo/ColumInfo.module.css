@@ -1,0 +1,10 @@
+.columInfo_contain{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    width: 80%;
+    max-width: 1080px;
+    margin: 0px auto;
+    justify-content: center;
+    text-align: center;
+    padding: 48px 0px;
+}
