@@ -38,6 +38,8 @@ export default function Home() {
     "Empowering Lives: Inclusive Sports and Health for All"
     "Unleashing Potential: Sports and Wellbeing for People with Disabilities"
     "Championing Abilities: Where Health and Sports Meet for All" */
+    calltoaction={{name:'Donate',link:'donation'}}
+    calltoaction2={{name:'doctors',link:'practitioners'}}
      />
      <div className={styles.separator}>
      <SubHeading

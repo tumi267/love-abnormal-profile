@@ -1,0 +1,56 @@
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .heading {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .description {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+  }
+  
+  .payfastForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    text-align: left;
+  }
+  
+  .input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .submitButton {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .submitButton:hover {
+    background-color: #005bb5;
+  }
+  
+  .note {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 20px;
+  }

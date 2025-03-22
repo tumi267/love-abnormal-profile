@@ -1,0 +1,15 @@
+.card_contain{
+    width: 80%;
+    max-width: 1080px;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    margin-left: auto;
+    margin-right: auto;
+    gap: 2em;
+    margin-top: 48px;
+}
+.header{
+    margin-top: 48px;
+    margin-bottom: 48px;
+    text-align: center;
+}

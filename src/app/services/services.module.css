@@ -1,0 +1,99 @@
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+.service_contain{
+  display: flex;
+  flex-direction: column;
+ 
+  padding-bottom: 48px;
+  justify-content: center;
+  text-align: center;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin: 48px 0%;
+  max-width: 1080px;
+  width: 80%;
+  margin: 0% auto;
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.299);
+}
+
+.icon {
+  font-size: 40px;
+}
+
+.bentoContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 20px;
+  padding: 40px;
+}
+
+.mission {
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+  text-align: left;
+}
+
+.mission {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.mission {
+  font-size: 16px;
+  color: #555;
+}
+
+.bentogrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  flex: 1;
+  max-width: 600px;
+  margin-bottom: 48px;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.emoji {
+  font-size: 32px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+
+.serviceContainer{
+  text-align: center;
+  margin: 48px auto;
+  background-color: #f0f0f0;
+  padding-top:48px;
+  padding-bottom:48px;
+}
+.serviceContent{
+  max-width: 1080px;
+  width: 80%;
+  margin: 0% auto; 
+}

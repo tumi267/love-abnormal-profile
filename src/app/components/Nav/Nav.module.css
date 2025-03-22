@@ -6,10 +6,12 @@
     justify-content: space-between;
 }
 .contain{
-    border: 1px solid black;
     position: sticky;
     height: 80px;
     padding: 0px 5%;
+    top: 0;
+    z-index: 2;
+    background-color: #edf1f4;
 }
 .content
 {

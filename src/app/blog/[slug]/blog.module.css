@@ -1,0 +1,100 @@
+.card_contain{
+    width: 80%;
+    max-width: 1080px;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    margin-left: auto;
+    margin-right: auto;
+    gap: 2em;
+    margin-top: 48px;
+}
+.header{
+    margin-top: 48px;
+    margin-bottom: 48px;
+    text-align: center;
+}
+/* blog.module.css */
+
+/* Container for the whole page */
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem;
+  }
+  
+  /* Header styles */
+  .header {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+  }
+  
+  /* Main content layout: flexbox for two columns */
+  .mainContent {
+    display: flex;
+    gap: 2rem;
+    justify-content: space-between;
+    width: 80%;
+    max-width: 1080px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  /* Styling for articles section */
+  .articles {
+    flex: 3;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+   
+  }
+  
+  /* Side menu styles */
+  .sideMenu {
+    flex: 1;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Menu item styles */
+  .menuItem {
+    margin-bottom: 1.5rem;
+  }
+  
+ 
+  
+  /* Styling for the links in the side menu */
+  .link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    padding: 1rem;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .link:hover {
+    background-color: #f0f0f0;
+  }
+  
+  /* Ensure the layout is responsive */
+  @media (max-width: 768px) {
+    .mainContent {
+      flex-direction: column;
+    }
+  
+    .articles {
+      grid-template-columns: 1fr; /* Single column for small screens */
+    }
+  
+    .sideMenu {
+      margin-top: 2rem;
+      width: 100%; /* Ensure side menu takes full width on small screens */
+    }
+  }
+  
