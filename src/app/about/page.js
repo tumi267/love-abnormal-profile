@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion, useInView } from 'framer-motion';
 import styles from './AboutUs.module.css';
+import Image from 'next/image';
 
 // Team data stored in an array
 const teamMembers = [
@@ -80,7 +81,9 @@ function TeamMember({ member, index }) {
       animate={isInView ? 'visible' : 'hidden'}
       transition={{ delay: index * 0.3, duration: 0.5 }} // Staggered delay based on index
     >
-      <img src={member.image} alt={member.name} />
+      <div className={styles.image_contain}>
+      <Image src={member.image} fill alt={member.name} />
+      </div>
       <p>
         {member.name} - {member.role}
       </p>

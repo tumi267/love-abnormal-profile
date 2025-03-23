@@ -3,7 +3,7 @@ import React from 'react'
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import styles from './donation.module.css'
-function page() {
+function DonationRes() {
     const params=useParams()
     const {slug}=params
     if(slug=='thank-you'){
@@ -26,4 +26,4 @@ function page() {
 
 }
 
-export default page
+export default DonationRes

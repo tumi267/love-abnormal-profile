@@ -20,6 +20,7 @@
   
   .featuredImage {
     width: 100%;
+    height: 250px;
     height: auto;
     border-radius: 8px;
     margin: 20px 0;
@@ -33,6 +34,7 @@
   }
   
   .breakingImage {
+    height: 150px;
     width: 100%;
     height: auto;
     border-radius: 8px;

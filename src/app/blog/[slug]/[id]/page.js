@@ -2,6 +2,7 @@
 import React from "react";
 import styles from "./blog.module.css";
 import { useParams } from "next/navigation";
+import Image from "next/image";
 
 const articleData = {
   title: "The Secret to Perfect Homemade Pasta",
@@ -19,7 +20,7 @@ const articleData = {
     ""
   ],
 };
-function page(){
+function BlogArtical(){
   const params =useParams()
   const {id}=params
 //  use id to get article graphQl
@@ -36,7 +37,7 @@ function page(){
       {/* Featured Image */}
       {articleData.images.length > 0 && (
         <div className={styles.featuredImage}>
-          <img src={articleData.images[0]} alt={articleData.title} />
+          <Image src={articleData.images[0]} fill alt={articleData.title} />
         </div>
       )}
 
@@ -48,7 +49,7 @@ function page(){
         {/* Breaking Images */}
         {articleData.images.slice(1).map((image, index) => (
           <div key={index} className={styles.breakingImage}>
-            <img src={image} alt={`Article Image ${index + 1}`} />
+            <Image src={image} fill alt={`Article Image ${index + 1}`} />
           </div>
         ))}
       </div>
@@ -56,4 +57,4 @@ function page(){
   );
 };
 
-export default page;
+export default BlogArtical;

@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './sonsours.module.css'
 import Link from 'next/link'
+import Image from 'next/image';
 function sponsours() {
   const sponsorsData = [
     {
@@ -64,11 +65,14 @@ function sponsours() {
           {/* Use Next.js Link for internal and external links */}
           <Link href={sponsor.link} passHref>
             <div className={styles.cardContent}>
-              <img
+              <div className={styles.sponsorLogo}>
+              <Image
                 src={sponsor.logo}
                 alt={sponsor.name}
-                className={styles.sponsorLogo}
+                fill
+                
               />
+              </div>
               <p className={styles.sponsorName}>{sponsor.name}</p>
             </div>
           </Link>

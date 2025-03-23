@@ -23,7 +23,7 @@ const typeDefs = gql`
     href: String!
     image: String!
     content: String!
-    author: String! # Add author field
+    author: String!
   }
 
   type Query {
@@ -43,7 +43,7 @@ const typeDefs = gql`
       href: String!
       image: String!
       content: String!
-      author: String! # Add author field
+      author: String!
     ): Article
     updateArticle(
       id: ID!
@@ -54,7 +54,7 @@ const typeDefs = gql`
       href: String!
       image: String!
       content: String!
-      author: String! # Add author field
+      author: String!
     ): Article
     deleteArticle(id: ID!): ID
   }
@@ -65,7 +65,9 @@ const resolvers = {
   Query: {
     categories: async () => {
       const snapshot = await getDocs(collection(db, 'categories'));
-      return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      return snapshot.docs
+        .map((doc) => ({ id: doc.id, ...doc.data() }))
+        .filter((category) => category.title != null); // Filter out categories without a title
     },
     articles: async () => {
       const snapshot = await getDocs(collection(db, 'articles'));
@@ -74,10 +76,16 @@ const resolvers = {
   },
   Mutation: {
     addCategory: async (_, { title, description, image, href }) => {
+      if (!title) {
+        throw new Error('Title is required');
+      }
       const docRef = await addDoc(collection(db, 'categories'), { title, description, image, href });
       return { id: docRef.id, title, description, image, href };
     },
     updateCategory: async (_, { id, title, description, image, href }) => {
+      if (!title) {
+        throw new Error('Title is required');
+      }
       await updateDoc(doc(db, 'categories', id), { title, description, image, href });
       return { id, title, description, image, href };
     },
@@ -86,6 +94,9 @@ const resolvers = {
       return id;
     },
     addArticle: async (_, { title, category, preview, date, href, image, content, author }) => {
+      if (!title || !author) {
+        throw new Error('Title and author are required');
+      }
       const docRef = await addDoc(collection(db, 'articles'), {
         title,
         category,
@@ -94,11 +105,14 @@ const resolvers = {
         href,
         image,
         content,
-        author, // Add author field
+        author,
       });
       return { id: docRef.id, title, category, preview, date, href, image, content, author };
     },
     updateArticle: async (_, { id, title, category, preview, date, href, image, content, author }) => {
+      if (!title || !author) {
+        throw new Error('Title and author are required');
+      }
       await updateDoc(doc(db, 'articles', id), {
         title,
         category,
@@ -107,7 +121,7 @@ const resolvers = {
         href,
         image,
         content,
-        author, // Add author field
+        author,
       });
       return { id, title, category, preview, date, href, image, content, author };
     },

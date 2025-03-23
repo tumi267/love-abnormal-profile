@@ -14,9 +14,12 @@
     "firebase": "^11.5.0",
     "framer-motion": "^12.5.0",
     "graphql": "^16.10.0",
+    "jsonwebtoken": "^9.0.2",
     "next": "^13.5.8",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "sharp": "^0.33.5",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "eslint": "^8",

@@ -1,5 +1,6 @@
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
-
+import styles from './Event.module.css'
 function EventManager() {
   // State for managing form inputs
   const [formData, setFormData] = useState({
@@ -8,7 +9,7 @@ function EventManager() {
     date: '',
     location: '',
     description: '',
-    image: '',
+    image:null,
     ticketLink: '',
   });
 
@@ -289,7 +290,9 @@ function EventManager() {
           <p>Date: {event.date}</p>
           <p>Location: {event.location}</p>
           <p>Ticket Link: <a href={event.ticketLink} target="_blank" rel="noopener noreferrer">Buy Tickets</a></p>
-          <img src={event.image} alt={event.title} style={{ maxWidth: '100%', height: 'auto' }} />
+          <div className={styles.event_image}>
+         {event.image!==null||event.image!==''&&<Image src={event.image} fill alt={event.title} />}
+          </div>
           <button onClick={() => handleEdit(event)}>Edit</button>
           <button onClick={() => handleDelete(event.id)} style={{ color: 'red' }}>
             Delete

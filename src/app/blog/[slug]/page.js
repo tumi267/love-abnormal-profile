@@ -5,7 +5,7 @@ import React from 'react'
 import styles from './blog.module.css'
 import { useParams } from 'next/navigation';
 import Link from 'next/link'
-function page() {
+function Categories() {
 const category =useParams()
 
     //graphQl call
@@ -147,4 +147,4 @@ const category =useParams()
       );
     }
     
-export default page;
+export default Categories;
