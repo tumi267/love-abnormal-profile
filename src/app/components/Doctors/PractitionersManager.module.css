@@ -1,0 +1,156 @@
+/* styles/PractitionersManager.module.css */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .subtitle {
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
+  .practitionersList {
+    margin-bottom: 30px;
+  }
+  
+  .practitionerCard {
+    display: flex;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+  }
+  
+  .practitionerImage {
+    margin-right: 20px;
+  }
+  
+  .image {
+    border-radius: 8px;
+  }
+  
+  .practitionerDetails {
+    flex: 1;
+  }
+  
+  .practitionerName {
+    margin: 0;
+    color: #333;
+  }
+  
+  .practitionerSpecialization {
+    margin: 5px 0;
+    color: #555;
+  }
+  
+  .practitionerBio {
+    margin: 10px 0;
+    color: #666;
+  }
+  
+  .practitionerContact {
+    margin: 5px 0;
+    color: #555;
+  }
+  
+  .bookingLink {
+    display: inline-block;
+    margin-top: 10px;
+    color: #2196F3;
+    text-decoration: none;
+  }
+  
+  .bookingLink:hover {
+    text-decoration: underline;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .updateButton {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .updateButton:hover {
+    background-color: #45a049;
+  }
+  
+  .deleteButton {
+    padding: 8px 16px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .deleteButton:hover {
+    background-color: #e53935;
+  }
+  
+  .formContainer {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  
+  .formGroup {
+    margin-bottom: 15px;
+  }
+  
+  .label {
+    display: block;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    resize: vertical;
+    min-height: 100px;
+  }
+  
+  .addButton {
+    padding: 10px 20px;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .addButton:hover {
+    background-color: #1e88e5;
+  }

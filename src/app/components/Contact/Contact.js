@@ -1,6 +1,7 @@
 'use client'; // Mark as a Client Component
 
 import React, { useState, useEffect } from 'react';
+import styles from './Contact.module.css'; // Import the CSS module
 
 function Contact() {
   const [contact, setContact] = useState(null); // Single contact state
@@ -81,10 +82,11 @@ function Contact() {
   }, []);
 
   return (
-    <div>
-      <h1>Manage Contact</h1>
-      <div>
-      
+    <div className={styles.container}>
+      <h1 className={styles.title}>Manage Contact</h1>
+
+      {/* Display Contact Details */}
+      <div className={styles.contactDetails}>
         {contact ? (
           <div>
             <p><strong>WhatsApp:</strong> {contact.whatsapp}</p>
@@ -97,33 +99,38 @@ function Contact() {
       </div>
 
       {/* Edit Contact Form */}
-      <div>
-        <h2>Edit Contact</h2>
-        <div>
-          <label>WhatsApp:</label>
+      <div className={styles.editForm}>
+        <h2 className={styles.subtitle}>Edit Contact</h2>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>WhatsApp:</label>
           <input
             type="text"
             value={whatsapp}
             onChange={(e) => setWhatsapp(e.target.value)}
+            className={styles.input}
           />
         </div>
-        <div>
-          <label>Email:</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Email:</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className={styles.input}
           />
         </div>
-        <div>
-          <label>Address:</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Address:</label>
           <input
             type="text"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
+            className={styles.input}
           />
         </div>
-        <button onClick={updateContact}>Update Contact</button>
+        <button onClick={updateContact} className={styles.button}>
+          Update Contact
+        </button>
       </div>
     </div>
   );

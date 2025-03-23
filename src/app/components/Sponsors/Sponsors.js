@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image'; // Import the Image component
+import styles from './Sponsors.module.css'; // Import the CSS module
 
 function Sponsors() {
   const [sponsours, setSponsours] = useState([]);
@@ -146,60 +147,83 @@ function Sponsors() {
   }, []);
 
   return (
-    <div>
-      <h1>Manage Sponsours</h1>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Manage Sponsours</h1>
 
       {/* Display existing sponsours */}
-      <div>
-        <h2>Existing Sponsours</h2>
+      <div className={styles.sponsoursList}>
+        <h2 className={styles.subtitle}>Existing Sponsours</h2>
         {sponsours.map((sponsour) => (
-          <div key={sponsour.id}>
-            <h3>{sponsour.name}</h3>
-            {/* Use the Next.js Image component */}
-            <Image
-              src={sponsour.image}
-              alt={sponsour.name}
-              width={100} // Set the width
-              height={100} // Set the height
-              style={{ objectFit: 'cover' }} // Optional: Adjust image styling
-            />
-            <a href={sponsour.url} target="_blank" rel="noopener noreferrer">
+          <div key={sponsour.id} className={styles.sponsourCard}>
+            <h3 className={styles.sponsourName}>{sponsour.name}</h3>
+            <div className={styles.sponsourImage}>
+              <Image
+                src={sponsour.image}
+                alt={sponsour.name}
+                width={100}
+                height={100}
+                className={styles.image}
+              />
+            </div>
+            <a
+              href={sponsour.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.websiteLink}
+            >
               Visit Website
             </a>
-            <button onClick={() => updateSponsour(sponsour.id)}>Update</button>
-            <button onClick={() => deleteSponsour(sponsour.id)}>Delete</button>
+            <div className={styles.actions}>
+              <button
+                onClick={() => updateSponsour(sponsour.id)}
+                className={styles.updateButton}
+              >
+                Update
+              </button>
+              <button
+                onClick={() => deleteSponsour(sponsour.id)}
+                className={styles.deleteButton}
+              >
+                Delete
+              </button>
+            </div>
           </div>
         ))}
       </div>
 
       {/* Add/Edit Sponsour Form */}
-      <div>
-        <h2>Add/Edit Sponsour</h2>
-        <div>
-          <label>Name:</label>
+      <div className={styles.formContainer}>
+        <h2 className={styles.subtitle}>Add/Edit Sponsour</h2>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Name:</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            className={styles.input}
           />
         </div>
-        <div>
-          <label>Image URL:</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Image URL:</label>
           <input
             type="text"
             value={image}
             onChange={(e) => setImage(e.target.value)}
+            className={styles.input}
           />
         </div>
-        <div>
-          <label>Website URL:</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Website URL:</label>
           <input
             type="text"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
+            className={styles.input}
           />
         </div>
-        <button onClick={addSponsour}>Add Sponsour</button>
+        <button onClick={addSponsour} className={styles.addButton}>
+          Add Sponsour
+        </button>
       </div>
     </div>
   );

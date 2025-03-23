@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import jwt from 'jsonwebtoken'; // For decoding JWTs
+import styles from './ApiReg.module.css'; // Import the CSS module
 
 function ApiReg() {
   const [api, setApi] = useState('');
@@ -226,56 +227,59 @@ function ApiReg() {
   };
 
   return (
-    <div>
-      <h1>API Registration</h1>
+    <div className={styles.container}>
+      <h1 className={styles.title}>API Registration</h1>
 
       {/* Add API Form */}
-      <form onSubmit={handleAddApi}>
-        <div>
-          <label>API:</label>
+      <form onSubmit={handleAddApi} className={styles.form}>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>API:</label>
           <input
             type="text"
             value={api}
             onChange={(e) => setApi(e.target.value)}
+            className={styles.input}
             required
           />
         </div>
-        <div>
-          <label>API Key:</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>API Key:</label>
           <input
             type="password"
             value={apiKey}
             onChange={(e) => setApiKey(e.target.value)}
+            className={styles.input}
             required
           />
         </div>
-        <div>
-          <label>API ID:</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>API ID:</label>
           <input
             type="password"
             value={apiId}
             onChange={(e) => setApiId(e.target.value)}
+            className={styles.input}
             required
           />
         </div>
-        <button type="submit" disabled={loading}>
+        <button type="submit" className={styles.button} disabled={loading}>
           Add API
         </button>
       </form>
 
       {/* Display messages */}
-      {message && <p>{message}</p>}
+      {message && <p className={styles.message}>{message}</p>}
 
       {/* Loading Indicator */}
-      {loading && <p>Loading...</p>}
+      {loading && <p className={styles.loading}>Loading...</p>}
 
       {/* Display API List */}
-      <div style={{ marginTop: '20px' }}>
-        <h2>API List</h2>
+      <div className={styles.apiList}>
+        <h2 className={styles.subtitle}>API List</h2>
         {apis.length > 0 ? (
-          <ul>
+          <ul className={styles.list}>
             {apis.map((api) => (
-              <li key={api.id} style={{ marginBottom: '10px' }}>
+              <li key={api.id} className={styles.listItem}>
                 {api.isEditing ? (
                   <form
                     onSubmit={(e) => {
@@ -283,9 +287,10 @@ function ApiReg() {
                       handleUpdateApi(api.id, api);
                       toggleEditMode(api.id); // Exit edit mode after saving
                     }}
+                    className={styles.form}
                   >
-                    <div>
-                      <label>API:</label>
+                    <div className={styles.formGroup}>
+                      <label className={styles.label}>API:</label>
                       <input
                         type="text"
                         value={api.api}
@@ -296,11 +301,12 @@ function ApiReg() {
                             )
                           )
                         }
+                        className={styles.input}
                         required
                       />
                     </div>
-                    <div>
-                      <label>API Key:</label>
+                    <div className={styles.formGroup}>
+                      <label className={styles.label}>API Key:</label>
                       <input
                         type={api.showApiKey ? 'text' : 'password'}
                         value={api.apiKey}
@@ -311,18 +317,19 @@ function ApiReg() {
                             )
                           )
                         }
+                        className={styles.input}
                         required
                       />
                       <button
                         type="button"
                         onClick={() => toggleApiKeyVisibility(api.id)}
-                        style={{ marginLeft: '10px' }}
+                        className={styles.toggleButton}
                       >
                         {api.showApiKey ? 'Hide' : 'Show'}
                       </button>
                     </div>
-                    <div>
-                      <label>API ID:</label>
+                    <div className={styles.formGroup}>
+                      <label className={styles.label}>API ID:</label>
                       <input
                         type={api.showApiId ? 'text' : 'password'}
                         value={api.apiId}
@@ -333,23 +340,24 @@ function ApiReg() {
                             )
                           )
                         }
+                        className={styles.input}
                         required
                       />
                       <button
                         type="button"
                         onClick={() => toggleApiIdVisibility(api.id)}
-                        style={{ marginLeft: '10px' }}
+                        className={styles.toggleButton}
                       >
                         {api.showApiId ? 'Hide' : 'Show'}
                       </button>
                     </div>
-                    <button type="submit" disabled={loading}>
+                    <button type="submit" className={styles.button} disabled={loading}>
                       Save
                     </button>
                     <button
                       type="button"
                       onClick={() => toggleEditMode(api.id)}
-                      style={{ marginLeft: '10px' }}
+                      className={styles.cancelButton}
                     >
                       Cancel
                     </button>
@@ -362,7 +370,7 @@ function ApiReg() {
                       <button
                         type="button"
                         onClick={() => toggleApiKeyVisibility(api.id)}
-                        style={{ marginLeft: '10px' }}
+                        className={styles.toggleButton}
                       >
                         {api.showApiKey ? 'Hide' : 'Show'}
                       </button>
@@ -372,23 +380,25 @@ function ApiReg() {
                       <button
                         type="button"
                         onClick={() => toggleApiIdVisibility(api.id)}
-                        style={{ marginLeft: '10px' }}
+                        className={styles.toggleButton}
                       >
                         {api.showApiId ? 'Hide' : 'Show'}
                       </button>
                     </p>
-                    <button
-                      onClick={() => toggleEditMode(api.id)}
-                      style={{ marginRight: '10px' }}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(api.id)}
-                      style={{ backgroundColor: 'red', color: 'white' }}
-                    >
-                      Delete
-                    </button>
+                    <div className={styles.actions}>
+                      <button
+                        onClick={() => toggleEditMode(api.id)}
+                        className={styles.editButton}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(api.id)}
+                        className={styles.deleteButton}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </>
                 )}
               </li>

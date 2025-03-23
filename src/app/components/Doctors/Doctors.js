@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image'; // Import the Image component
+import styles from './PractitionersManager.module.css'; // Import the CSS module
 
 function PractitionersManager() {
   const [practitioners, setPractitioners] = useState([]);
@@ -180,94 +181,128 @@ function PractitionersManager() {
   }, []);
 
   return (
-    <div>
-      <h1>Manage Practitioners</h1>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Manage Practitioners</h1>
 
       {/* Display existing practitioners */}
-      <div>
-        <h2>Existing Practitioners</h2>
+      <div className={styles.practitionersList}>
+        <h2 className={styles.subtitle}>Existing Practitioners</h2>
         {practitioners.map((practitioner) => (
-          <div key={practitioner.id}>
-            <h3>{practitioner.name}</h3>
-            <p>{practitioner.specialization}</p>
-            <p>{practitioner.bio}</p>
-            <p>{practitioner.email}</p>
-            <p>{practitioner.phone}</p>
-            <Image
-              src={practitioner.image}
-              alt={practitioner.name}
-              width={100}
-              height={100}
-              style={{ objectFit: 'cover' }}
-            />
-            <a href={practitioner.bookingLink} target="_blank" rel="noopener noreferrer">
-              Book Appointment
-            </a>
-            <button onClick={() => updatePractitioner(practitioner.id)}>Update</button>
-            <button onClick={() => deletePractitioner(practitioner.id)}>Delete</button>
+          <div key={practitioner.id} className={styles.practitionerCard}>
+            <div className={styles.practitionerImage}>
+              <Image
+                src={practitioner.image}
+                alt={practitioner.name}
+                width={100}
+                height={100}
+                className={styles.image}
+              />
+            </div>
+            <div className={styles.practitionerDetails}>
+              <h3 className={styles.practitionerName}>{practitioner.name}</h3>
+              <p className={styles.practitionerSpecialization}>{practitioner.specialization}</p>
+              <p className={styles.practitionerBio}>{practitioner.bio}</p>
+              <p className={styles.practitionerContact}>
+                <strong>Email:</strong> {practitioner.email}
+              </p>
+              <p className={styles.practitionerContact}>
+                <strong>Phone:</strong> {practitioner.phone}
+              </p>
+              <a
+                href={practitioner.bookingLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.bookingLink}
+              >
+                Book Appointment
+              </a>
+            </div>
+            <div className={styles.actions}>
+              <button
+                onClick={() => updatePractitioner(practitioner.id)}
+                className={styles.updateButton}
+              >
+                Update
+              </button>
+              <button
+                onClick={() => deletePractitioner(practitioner.id)}
+                className={styles.deleteButton}
+              >
+                Delete
+              </button>
+            </div>
           </div>
         ))}
       </div>
 
       {/* Add/Edit Practitioner Form */}
-      <div>
-        <h2>Add/Edit Practitioner</h2>
-        <div>
-          <label>Name:</label>
+      <div className={styles.formContainer}>
+        <h2 className={styles.subtitle}>Add/Edit Practitioner</h2>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Name:</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            className={styles.input}
           />
         </div>
-        <div>
-          <label>Specialization:</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Specialization:</label>
           <input
             type="text"
             value={specialization}
             onChange={(e) => setSpecialization(e.target.value)}
+            className={styles.input}
           />
         </div>
-        <div>
-          <label>Bio:</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Bio:</label>
           <textarea
             value={bio}
             onChange={(e) => setBio(e.target.value)}
+            className={styles.textarea}
           />
         </div>
-        <div>
-          <label>Email:</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Email:</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className={styles.input}
           />
         </div>
-        <div>
-          <label>Phone:</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Phone:</label>
           <input
             type="text"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
+            className={styles.input}
           />
         </div>
-        <div>
-          <label>Image URL:</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Image URL:</label>
           <input
             type="text"
             value={image}
             onChange={(e) => setImage(e.target.value)}
+            className={styles.input}
           />
         </div>
-        <div>
-          <label>Booking Link:</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Booking Link:</label>
           <input
             type="text"
             value={bookingLink}
             onChange={(e) => setBookingLink(e.target.value)}
+            className={styles.input}
           />
         </div>
-        <button onClick={addPractitioner}>Add Practitioner</button>
+        <button onClick={addPractitioner} className={styles.addButton}>
+          Add Practitioner
+        </button>
       </div>
     </div>
   );

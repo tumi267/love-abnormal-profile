@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import styles from './Event.module.css'
+import styles from './Event.module.css'; // Import the CSS module
+
 function EventManager() {
   // State for managing form inputs
   const [formData, setFormData] = useState({
@@ -9,7 +10,7 @@ function EventManager() {
     date: '',
     location: '',
     description: '',
-    image:null,
+    image: '',
     ticketLink: '',
   });
 
@@ -208,95 +209,121 @@ function EventManager() {
   };
 
   return (
-    <div>
-      <h1>Event Manager</h1>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Event Manager</h1>
 
       {/* Add/Edit Event Form */}
-      <form onSubmit={handleSubmit}>
-        <h2>{isEditing ? 'Edit Event' : 'Add Event'}</h2>
-        <div>
-          <label>Title:</label>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <h2 className={styles.subtitle}>{isEditing ? 'Edit Event' : 'Add Event'}</h2>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Title:</label>
           <input
             type="text"
             name="title"
             value={formData.title}
             onChange={handleChange}
+            className={styles.input}
             required
           />
         </div>
-        <div>
-          <label>Date:</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Date:</label>
           <input
             type="date"
             name="date"
             value={formData.date}
             onChange={handleChange}
+            className={styles.input}
             required
           />
         </div>
-        <div>
-          <label>Location:</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Location:</label>
           <input
             type="text"
             name="location"
             value={formData.location}
             onChange={handleChange}
+            className={styles.input}
             required
           />
         </div>
-        <div>
-          <label>Description:</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Description:</label>
           <textarea
             name="description"
             value={formData.description}
             onChange={handleChange}
+            className={styles.textarea}
             required
           />
         </div>
-        <div>
-          <label>Image URL:</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Image URL:</label>
           <input
             type="text"
             name="image"
             value={formData.image}
             onChange={handleChange}
+            className={styles.input}
             required
           />
         </div>
-        <div>
-          <label>Ticket Link:</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Ticket Link:</label>
           <input
             type="text"
             name="ticketLink"
             value={formData.ticketLink}
             onChange={handleChange}
+            className={styles.input}
             required
           />
         </div>
-        <button type="submit">{isEditing ? 'Update Event' : 'Add Event'}</button>
-        {isEditing && (
-          <button type="button" onClick={resetForm}>
-            Cancel Edit
+        <div className={styles.formActions}>
+          <button type="submit" className={styles.submitButton}>
+            {isEditing ? 'Update Event' : 'Add Event'}
           </button>
-        )}
+          {isEditing && (
+            <button type="button" onClick={resetForm} className={styles.cancelButton}>
+              Cancel Edit
+            </button>
+          )}
+        </div>
       </form>
 
       {/* Event List */}
-      <h2>Event List</h2>
+      <h2 className={styles.subtitle}>Event List</h2>
       {events.map((event) => (
-        <div key={event.id} style={{ border: '1px solid #ccc', padding: '10px', margin: '10px 0' }}>
-          <h3>{event.title}</h3>
-          <p>{event.description}</p>
-          <p>Date: {event.date}</p>
-          <p>Location: {event.location}</p>
-          <p>Ticket Link: <a href={event.ticketLink} target="_blank" rel="noopener noreferrer">Buy Tickets</a></p>
-          <div className={styles.event_image}>
-         {event.image!==null||event.image!==''&&<Image src={event.image} fill alt={event.title} />}
+        <div key={event.id} className={styles.eventCard}>
+          <h3 className={styles.eventTitle}>{event.title}</h3>
+          <p className={styles.eventDescription}>{event.description}</p>
+          <p className={styles.eventDetail}><strong>Date:</strong> {event.date}</p>
+          <p className={styles.eventDetail}><strong>Location:</strong> {event.location}</p>
+          <p className={styles.eventDetail}>
+            <strong>Ticket Link:</strong>{' '}
+            <a href={event.ticketLink} target="_blank" rel="noopener noreferrer" className={styles.ticketLink}>
+              Buy Tickets
+            </a>
+          </p>
+          <div className={styles.eventImage}>
+            {event.image && (
+              <Image
+                src={event.image}
+                alt={event.title}
+                fill
+                className={styles.image}
+              />
+            )}
           </div>
-          <button onClick={() => handleEdit(event)}>Edit</button>
-          <button onClick={() => handleDelete(event.id)} style={{ color: 'red' }}>
-            Delete
-          </button>
+          <div className={styles.eventActions}>
+            <button onClick={() => handleEdit(event)} className={styles.editButton}>
+              Edit
+            </button>
+            <button onClick={() => handleDelete(event.id)} className={styles.deleteButton}>
+              Delete
+            </button>
+          </div>
         </div>
       ))}
     </div>

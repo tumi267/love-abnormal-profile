@@ -2,6 +2,7 @@
 'use client'; // Required for client-side rendering in Next.js 13
 
 import { useEffect, useState } from 'react';
+import styles from './AboutUs.module.css'; // Import the CSS module
 
 export default function About() {
   const [aboutData, setAboutData] = useState(null);
@@ -201,16 +202,17 @@ export default function About() {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="about-container">
+    <div className={styles.aboutContainer}>
       {isEditing ? (
         <form
           onSubmit={(e) => {
             e.preventDefault();
             saveAbout();
           }}
+          className={styles.aboutForm}
         >
           {/* Hero Section */}
-          <section>
+          <section className={styles.formSection}>
             <h2>Hero Section</h2>
             <input
               type="text"
@@ -218,17 +220,19 @@ export default function About() {
               value={formData.heroTitle}
               onChange={handleInputChange}
               placeholder="Hero Title"
+              className={styles.formInput}
             />
             <textarea
               name="heroMsg"
               value={formData.heroMsg}
               onChange={handleInputChange}
               placeholder="Hero Message"
+              className={styles.formTextarea}
             />
           </section>
 
           {/* Mission Section */}
-          <section>
+          <section className={styles.formSection}>
             <h2>Mission Section</h2>
             <input
               type="text"
@@ -236,26 +240,29 @@ export default function About() {
               value={formData.missionTitle}
               onChange={handleInputChange}
               placeholder="Mission Title"
+              className={styles.formInput}
             />
             <textarea
               name="missionMsg"
               value={formData.missionMsg}
               onChange={handleInputChange}
               placeholder="Mission Message"
+              className={styles.formTextarea}
             />
           </section>
 
           {/* Team Section */}
-          <section>
+          <section className={styles.formSection}>
             <h2>Team Section</h2>
             {formData.team.map((member, index) => (
-              <div key={index}>
+              <div key={index} className={styles.teamMember}>
                 <input
                   type="text"
                   name="name"
                   value={member.name}
                   onChange={(e) => handleTeamMemberChange(index, e)}
                   placeholder="Name"
+                  className={styles.formInput}
                 />
                 <input
                   type="text"
@@ -263,19 +270,20 @@ export default function About() {
                   value={member.position}
                   onChange={(e) => handleTeamMemberChange(index, e)}
                   placeholder="Position"
+                  className={styles.formInput}
                 />
-                <button type="button" onClick={() => removeTeamMember(index)}>
+                <button type="button" onClick={() => removeTeamMember(index)} className={styles.removeButton}>
                   Remove
                 </button>
               </div>
             ))}
-            <button type="button" onClick={addTeamMember}>
+            <button type="button" onClick={addTeamMember} className={styles.addButton}>
               Add Team Member
             </button>
           </section>
 
           {/* Impact Section */}
-          <section>
+          <section className={styles.formSection}>
             <h2>Impact Section</h2>
             <input
               type="text"
@@ -283,47 +291,53 @@ export default function About() {
               value={formData.impactTitle}
               onChange={handleInputChange}
               placeholder="Impact Title"
+              className={styles.formInput}
             />
             <textarea
               name="impactMsg"
               value={formData.impactMsg}
               onChange={handleInputChange}
               placeholder="Impact Message"
+              className={styles.formTextarea}
             />
           </section>
 
-          <button type="submit">Save</button>
-          <button type="button" onClick={() => setIsEditing(false)}>
-            Cancel
-          </button>
+          <div className={styles.formActions}>
+            <button type="submit" className={styles.saveButton}>Save</button>
+            <button type="button" onClick={() => setIsEditing(false)} className={styles.cancelButton}>
+              Cancel
+            </button>
+          </div>
         </form>
       ) : (
         <>
           {/* Display About Data */}
-          <section>
-            <h1>{aboutData?.heroTitle}</h1>
-            <p>{aboutData?.heroMsg}</p>
+          <section className={styles.aboutSection}>
+            <h1 className={styles.heroTitle}>{aboutData?.heroTitle}</h1>
+            <p className={styles.heroMessage}>{aboutData?.heroMsg}</p>
           </section>
-          <section>
-            <h2>{aboutData?.missionTitle}</h2>
-            <p>{aboutData?.missionMsg}</p>
+          <section className={styles.aboutSection}>
+            <h2 className={styles.missionTitle}>{aboutData?.missionTitle}</h2>
+            <p className={styles.missionMessage}>{aboutData?.missionMsg}</p>
           </section>
-          <section>
-            <h2>Our Team</h2>
+          <section className={styles.aboutSection}>
+            <h2 className={styles.teamTitle}>Our Team</h2>
             {aboutData?.team.map((member, index) => (
-              <div key={index}>
-                <h3>{member.name}</h3>
-                <p>{member.position}</p>
+              <div key={index} className={styles.teamMember}>
+                <h3 className={styles.teamMemberName}>{member.name}</h3>
+                <p className={styles.teamMemberPosition}>{member.position}</p>
               </div>
             ))}
           </section>
-          <section>
-            <h2>{aboutData?.impactTitle}</h2>
-            <p>{aboutData?.impactMsg}</p>
+          <section className={styles.aboutSection}>
+            <h2 className={styles.impactTitle}>{aboutData?.impactTitle}</h2>
+            <p className={styles.impactMessage}>{aboutData?.impactMsg}</p>
           </section>
 
-          <button onClick={() => setIsEditing(true)}>Edit</button>
-          <button onClick={deleteAbout}>Delete</button>
+          <div className={styles.actions}>
+            <button onClick={() => setIsEditing(true)} className={styles.editButton}>Edit</button>
+            <button onClick={deleteAbout} className={styles.deleteButton}>Delete</button>
+          </div>
         </>
       )}
     </div>

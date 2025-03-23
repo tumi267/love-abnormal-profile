@@ -1,6 +1,7 @@
 'use client'; // Mark as a Client Component
 
 import React, { useState, useEffect } from 'react';
+import styles from './Services.module.css'; // Import the CSS module
 
 function Services() {
   const [services, setServices] = useState([]);
@@ -178,86 +179,118 @@ function Services() {
   }, []);
 
   return (
-    <div>
-      <h1>Manage Services</h1>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Manage Services</h1>
 
       {/* Display existing services */}
-      <div>
-        <h2>Existing Services</h2>
+      <div className={styles.servicesList}>
+        <h2 className={styles.subtitle}>Existing Services</h2>
         {services.map((service) => (
-          <div key={service.id}>
-            <h3>{service.title}</h3>
-            <p>{service.titleMsg}</p>
-            <h3>{service.subTitle}</h3>
-            <p>{service.subMsg}</p>
-            <ul>
+          <div key={service.id} className={styles.serviceCard}>
+            <h3 className={styles.serviceTitle}>{service.title}</h3>
+            <p className={styles.serviceMessage}>{service.titleMsg}</p>
+            <h4 className={styles.serviceSubtitle}>{service.subTitle}</h4>
+            <p className={styles.serviceMessage}>{service.subMsg}</p>
+            <ul className={styles.serviceItems}>
               {service.services.map((item, index) => (
-                <li key={index}>
-                  {item.title} - <img src={item.image} alt={item.title} width="50" />
+                <li key={index} className={styles.serviceItem}>
+                  <span className={styles.itemTitle}>{item.title}</span>
+                  <img src={item.image} alt={item.title} className={styles.itemImage} />
                 </li>
               ))}
             </ul>
-            <button onClick={() => updateService(service.id)}>Update</button>
-            <button onClick={() => deleteService(service.id)}>Delete</button>
+            <div className={styles.serviceActions}>
+              <button
+                onClick={() => updateService(service.id)}
+                className={styles.updateButton}
+              >
+                Update
+              </button>
+              <button
+                onClick={() => deleteService(service.id)}
+                className={styles.deleteButton}
+              >
+                Delete
+              </button>
+            </div>
           </div>
         ))}
       </div>
 
       {/* Add/Edit Service Form */}
-      <div>
-        <h2>Add/Edit Service</h2>
-        <div>
-          <label>Title:</label>
+      <div className={styles.formContainer}>
+        <h2 className={styles.subtitle}>Add/Edit Service</h2>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Title:</label>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            className={styles.input}
           />
         </div>
-        <div>
-          <label>Title Message:</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Title Message:</label>
           <textarea
             value={titleMsg}
             onChange={(e) => setTitleMsg(e.target.value)}
+            className={styles.textarea}
           />
         </div>
-        <div>
-          <label>Subtitle:</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Subtitle:</label>
           <input
             type="text"
             value={subTitle}
             onChange={(e) => setSubTitle(e.target.value)}
+            className={styles.input}
           />
         </div>
-        <div>
-          <label>Sub Message:</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Sub Message:</label>
           <textarea
             value={subMsg}
             onChange={(e) => setSubMsg(e.target.value)}
+            className={styles.textarea}
           />
         </div>
-        <div>
-          <h3>Service Items</h3>
+        <div className={styles.serviceItemsSection}>
+          <h3 className={styles.subtitle}>Service Items</h3>
           {serviceItems.map((item, index) => (
-            <div key={index}>
-              <label>Title:</label>
-              <input
-                type="text"
-                value={item.title}
-                onChange={(e) => handleServiceItemChange(index, 'title', e.target.value)}
-              />
-              <label>Image URL:</label>
-              <input
-                type="text"
-                value={item.image}
-                onChange={(e) => handleServiceItemChange(index, 'image', e.target.value)}
-              />
-              <button onClick={() => removeServiceItem(index)}>Remove</button>
+            <div key={index} className={styles.serviceItemForm}>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Title:</label>
+                <input
+                  type="text"
+                  value={item.title}
+                  onChange={(e) => handleServiceItemChange(index, 'title', e.target.value)}
+                  className={styles.input}
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Image URL:</label>
+                <input
+                  type="text"
+                  value={item.image}
+                  onChange={(e) => handleServiceItemChange(index, 'image', e.target.value)}
+                  className={styles.input}
+                />
+              </div>
+              <button
+                onClick={() => removeServiceItem(index)}
+                className={styles.removeButton}
+              >
+                Remove
+              </button>
             </div>
           ))}
-          <button onClick={addServiceItem}>Add Service Item</button>
+          <button onClick={addServiceItem} className={styles.addButton}>
+            Add Service Item
+          </button>
         </div>
-        <button onClick={addService}>Add Service</button>
+        <button onClick={addService} className={styles.submitButton}>
+          Add Service
+        </button>
       </div>
     </div>
   );
