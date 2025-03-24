@@ -10,7 +10,7 @@ import CallToAction from './components/CallToAction/CallToAction'
 import dataimage from '/public/data.png'
 import fingerPrint from '/public/fingerprint.png'
 import training from '/public/training.png'
-import Slider from './components/slider/slider'
+import Slider from './components/slider/Slider'
 export default function Home() {
   // graphQl data
   const ColumInfoarr1=[{title:'Smart Solutions Through Data',msg:'Introducing our participant-centered wellness database, a powerful tool that supports data-driven decision-making and personalized health insights.',url:dataimage},{title:'Breaking Barriers, Expanding Opportunities',msg:'Expanding access to evidence-based virtual health programs, led by experts in disability health, to ensure inclusive and engaging wellness opportunities for all.',url:fingerPrint},{title:'Strengthening Skills, Transforming Lives',msg:'Strengthening the field of disability health through education, training, and collaboration—empowering individuals, communities, and organizations to drive lasting change.',url:training}]

@@ -1,6 +1,6 @@
 import React from 'react'
 import Hero from '../components/Hero/Hero'
-import Search from '../components/search/search'
+import Search from '../components/search/Search'
 import EventCard from '../components/EventCard/EventCrad'
 import styles from './activities.module.css'
 function page() {

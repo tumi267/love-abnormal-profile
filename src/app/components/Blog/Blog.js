@@ -267,7 +267,6 @@ function Blog() {
   return (
     <div className={styles.blogContainer}>
       <h2>Blog Management</h2>
-
       {/* Switch between articles and categories */}
       <div className={styles.switchButtons}>
         <button
