@@ -1,10 +1,27 @@
-.columInfo_contain{
+.columInfo_contain {
     display: grid;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(3, 1fr);
     width: 80%;
     max-width: 1080px;
     margin: 0px auto;
     justify-content: center;
     text-align: center;
     padding: 48px 0px;
-}
+    gap: 20px; /* Add gap between grid items */
+  }
+  
+  /* Mobile Responsive Styles */
+  @media (max-width: 768px) {
+    .columInfo_contain {
+      grid-template-columns: 1fr; /* Switch to a single column layout */
+      width: 90%; /* Increase width for better mobile layout */
+      padding: 24px 0px; /* Reduce padding for smaller screens */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .columInfo_contain {
+      width: 95%; /* Further increase width for very small screens */
+      padding: 16px 0px; /* Further reduce padding */
+    }
+  }

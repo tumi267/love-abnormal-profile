@@ -66,7 +66,9 @@
     margin-bottom: 1.5rem;
   }
   
- 
+ .dawer{
+  display: none;
+ }
   
   /* Styling for the links in the side menu */
   .link {
@@ -91,8 +93,11 @@
     .articles {
       grid-template-columns: 1fr; /* Single column for small screens */
     }
-  
+  .dawer{
+    display: block;
+  }
     .sideMenu {
+      display: none;
       margin-top: 2rem;
       width: 100%; /* Ensure side menu takes full width on small screens */
     }

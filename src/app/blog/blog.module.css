@@ -13,3 +13,19 @@
     margin-bottom: 48px;
     text-align: center;
 }
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    .card_contain{
+
+        grid-template-columns: repeat(2,1fr);
+
+    }
+  }
+  
+@media (max-width: 480px) {
+    .card_contain{
+
+        grid-template-columns: repeat(1,1fr);
+
+    }
+  }

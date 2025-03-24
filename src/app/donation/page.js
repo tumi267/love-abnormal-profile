@@ -1,15 +1,22 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './donations.module.css';
 
 function DonationsPage() {
   // PayFast sandbox credentials (replace with your actual credentials)
   const merchantId = '10037768'; // Example sandbox merchant ID
   const merchantKey = 'vgjgkbfmipf79'; // Example sandbox merchant key
+  const [amount, setAmount] = useState('');
+  useEffect(()=>{
+    const updateAmount = () => {
+      setAmount('100'); // Set the amount to a new value
+    };
+    updateAmount()
+  },[])
 
   // Payment details
-  const [amount,setAmount] = useState('100.00'); // Donation amount in ZAR
+
   const itemName = 'Donation to Our Cause';
   const returnUrl = 'http://localhost:3000/donation/thank-you'; // Redirect after payment
   const cancelUrl = 'http://localhost:3000/donation/cancel'; // Redirect if payment is canceled
@@ -32,7 +39,7 @@ function DonationsPage() {
         <input type="hidden" name="return_url" value={returnUrl} />
         <input type="hidden" name="cancel_url" value={cancelUrl} />
         
-        <input type="hidden" name="amount" value={amount} onChange={(e)=>{setAmount(e.target.value)}} />
+        <input type="hidden" name="amount" value={amount}  />
         <input type="hidden" name="item_name" value={itemName} />
 
         <div className={styles.formGroup}>
@@ -42,7 +49,7 @@ function DonationsPage() {
             id="amount"
             name="amount"
             value={amount}
-            readOnly
+            onChange={(e)=>{setAmount(e.target.value)}}
             className={styles.input}
           />
         </div>

@@ -1,13 +1,16 @@
 'use client'
 import EventCard from '@/app/components/EventCard/EventCrad'
 import Carousel from '@/app/components/ThreeDCarosel/ThreeDCarosel'
-import React from 'react'
+import React, { useEffect ,useState} from 'react'
 import styles from './blog.module.css'
 import { useParams } from 'next/navigation';
 import Link from 'next/link'
+
+
 function Categories() {
 const category =useParams()
-
+const [drawerisopen, setDrawerIsOpen] = useState(false);
+const [mobile,setmobile]=useState(false)
     //graphQl call
     const articles = [
         {
@@ -110,9 +113,41 @@ const category =useParams()
         },
       ];
       const caroseclArticles = articles.slice(0, 3);
+      const toggleDrawer = () => {
+        setDrawerIsOpen(!drawerisopen);
+      };
+      useEffect(() => {
+  // Function to check if the screen is mobile
+  const isMobile = () => window.innerWidth <= 768;
 
+  // Function to update sideMenu display
+  const updateSideMenuDisplay = () => {
+    const sideMenu = document.querySelector(`.${styles.sideMenu}`);
+    if (sideMenu) {
+      if (isMobile()) {
+        // On mobile, show/hide based on drawerisopen state
+        sideMenu.style.display = drawerisopen ? 'block' : 'none';
+        setmobile(true)
+      } else {
+        // On desktop, always show the sideMenu
+        sideMenu.style.display = 'block';
+        setmobile(false)
+      }
+    }
+  };
+
+  // Initial check
+  updateSideMenuDisplay();
+
+  // Add resize event listener
+  window.addEventListener('resize', updateSideMenuDisplay);
+
+  // Cleanup
+  return () => window.removeEventListener('resize', updateSideMenuDisplay);
+      }, [drawerisopen]);
       return (
         <div className={styles.mainContent}>
+        {mobile&&<button onClick={()=>{toggleDrawer()}}>burger</button>}
         <div className={styles.sideMenu}>
               <h3>Categories</h3>
               {categories.map((e) => (

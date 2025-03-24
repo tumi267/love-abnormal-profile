@@ -1,21 +1,21 @@
-.bento{
-  
+.bento {
     width: 80%;
     max-width: 1080px;
     margin: 48px auto;
     display: grid;
-    grid-template-columns: repeat(3,1fr);
-    grid-template-rows: repeat(6,4em);
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(6, 4em);
     gap: 2em;
-    grid-template-areas: 
-    " item1 item1 item2"
-    " item1 item1 item2"
-    " item3 item4 item2"
-    " item3 item4 item6"
-    " item5 item5 item6"
-    " item5 item5 item6";
-    }
-.box{
+    grid-template-areas:
+      "item1 item1 item2"
+      "item1 item1 item2"
+      "item3 item4 item2"
+      "item3 item4 item6"
+      "item5 item5 item6"
+      "item5 item5 item6";
+  }
+  
+  .box {
     position: relative;
     background: rgba(104, 99, 99, 0.202); /* Transparent background */
     backdrop-filter: blur(10px); /* Blurred glass effect */
@@ -32,31 +32,81 @@
     text-align: center;
     border-radius: 12%;
     overflow: hidden;
-}
-.box1{
+  }
+  
+  .box1 {
     grid-area: item1;
-}
-.box2{
+  }
+  
+  .box2 {
     grid-area: item2;
-}
-.box3{
+  }
+  
+  .box3 {
     grid-area: item3;
-}
-.box4{
+  }
+  
+  .box4 {
     grid-area: item4;
-}
-.box5{
+  }
+  
+  .box5 {
     grid-area: item5;
-}
-.box6{
+  }
+  
+  .box6 {
     grid-area: item6;
-}
-.title{
+  }
+  
+  .title {
     position: relative;
     font-size: 32px;
     color: #ffffff;
     z-index: 2;
-}
-.link{
+  }
+  
+  .link {
     text-decoration: none;
-}
+  }
+  
+  /* Mobile Responsive Styles */
+  @media (max-width: 768px) {
+    .bento {
+      grid-template-columns: 1fr; /* Switch to a single column layout */
+      grid-template-rows: auto; /* Allow rows to adjust based on content */
+      grid-template-areas:
+        "item1"
+        "item2"
+        "item3"
+        "item4"
+        "item5"
+        "item6";
+      gap: 1.5em; /* Reduce gap for smaller screens */
+      width: 90%; /* Increase width for better mobile layout */
+      margin: 24px auto; /* Adjust margin for smaller screens */
+    }
+  
+    .box {
+      padding: 15px; /* Reduce padding for smaller screens */
+    }
+  
+    .title {
+      font-size: 24px; /* Reduce font size for smaller screens */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .bento {
+      width: 95%; /* Further increase width for very small screens */
+      gap: 1em; /* Further reduce gap */
+      margin: 16px auto; /* Further adjust margin */
+    }
+  
+    .box {
+      padding: 10px; /* Further reduce padding */
+    }
+  
+    .title {
+      font-size: 20px; /* Further reduce font size */
+    }
+  }

@@ -6,15 +6,20 @@
     perspective: 1200px; /* Create 3D perspective */
     margin-top: 48px;
     margin-bottom: 48px;
+    overflow: hidden;
+    max-width: 1080px;
+    padding: 48px;
   }
   
   .carousel {
     position: relative;
-    width: 100%;
+    width: 27.78%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
   }
   
   .carouselWrapper {
@@ -79,4 +84,22 @@
     font-size: 1.5rem;
   }
   
-  
+  /* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .carouselContainer{
+    margin: 0%;
+    
+  }
+
+}
+
+@media (max-width: 480px) {
+  .carouselContainer{
+    width: 100%;
+    padding: 48px 0px;
+  }
+  .carousel{
+    
+    margin: 0% auto;
+  }
+}

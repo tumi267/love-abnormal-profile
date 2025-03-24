@@ -6,7 +6,7 @@
     color: rgb(7, 7, 7);
   }
   .image_contain{
-    height: 250px;
+    height: 114px;
     width: 60%;
     margin-left: auto;
     margin-right: auto;
@@ -39,10 +39,16 @@
  
   
   .teamGrid {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    place-items: center;
     justify-content: center;
     gap: 20px;
     margin-top: 20px;
+    width: 80%;
+    max-width: 1080px;
+    margin-left: auto;
+    margin-right: auto;
   }
   
   .member {
@@ -66,4 +72,20 @@
     background: rgba(255, 255, 255, 0.2);
     border-radius: 12px;
   }
-  
+  /* Responsive Styles for Tablets */
+@media (max-width: 768px) {
+  .teamGrid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
+    width: 90%; /* Increase width for better spacing */
+    gap: 72px; /* Reduce gap between items */
+  }
+}
+
+/* Responsive Styles for Mobile */
+@media (max-width: 480px) {
+  .teamGrid {
+    grid-template-columns: 1fr; /* 1 column on mobile */
+    width: 100%; /* Full width on mobile */
+    gap: 72px; /* Further reduce gap between items */
+  }
+}
