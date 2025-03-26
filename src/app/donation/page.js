@@ -8,7 +8,9 @@ function DonationsPage() {
   const [amount, setAmount] = useState('100'); // Default amount to be set
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
-
+  const baseUrl = process.env.NEXT_PUBLIC_DEV === 'prod' 
+  ? 'https://love-abnormal-profile.vercel.app/' 
+  : 'http://localhost:3000/';
   // Handle donation submission
   const handleDonateClick = async (e) => {
     e.preventDefault(); // Prevent immediate form submission
@@ -61,8 +63,8 @@ function DonationsPage() {
             const formData = {
               merchant_id: apiId,
               merchant_key: apiKey,
-              return_url: 'http://localhost:3000/donation/thank-you',
-              cancel_url: 'http://localhost:3000/donation/cancel',
+              return_url: `${baseUrl}donation/thank-you`,
+              cancel_url: `${baseUrl}donation/cancel`,
               amount: amount,
               item_name: 'Donation to Our Cause',
             };

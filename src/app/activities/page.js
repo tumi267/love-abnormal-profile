@@ -5,6 +5,9 @@ import EventCard from '../components/EventCard/EventCrad';
 import styles from './activities.module.css';
 
 async function getEvents() {
+  const baseUrl = process.env.NEXT_PUBLIC_DEV === 'prod' 
+  ? 'https://love-abnormal-profile.vercel.app/' 
+  : 'http://localhost:3000/';
   const query = `
     query {
       events {
@@ -20,7 +23,7 @@ async function getEvents() {
   `;
 
   try {
-    const response = await fetch('http://localhost:3000/api/eventsgraphql', {
+    const response = await fetch(`${baseUrl}api/eventsgraphql`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

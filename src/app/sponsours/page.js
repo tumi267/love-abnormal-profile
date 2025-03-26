@@ -4,6 +4,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 async function getSponsors() {
+  const baseUrl = process.env.NEXT_PUBLIC_DEV === 'prod' 
+  ? 'https://love-abnormal-profile.vercel.app/' 
+  : 'http://localhost:3000/';
   const query = `
     query {
       sponsours {
@@ -16,7 +19,7 @@ async function getSponsors() {
   `;
 
   try {
-    const response = await fetch('http://localhost:3000/api/sponsoursgraphql', {
+    const response = await fetch(`${baseUrl}api/sponsoursgraphql`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

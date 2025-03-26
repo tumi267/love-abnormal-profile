@@ -3,6 +3,9 @@ import styles from "./practitioners.module.css";
 import Image from "next/image";
 
 async function getPractitioners() {
+  const baseUrl = process.env.NEXT_PUBLIC_DEV === 'prod' 
+  ? 'https://love-abnormal-profile.vercel.app/' 
+  : 'http://localhost:3000/';
   const query = `
     query {
       practitioners {
@@ -19,7 +22,7 @@ async function getPractitioners() {
   `;
 
   try {
-    const response = await fetch('http://localhost:3000/api/practitionersgraphql', {
+    const response = await fetch(`${baseUrl}api/practitionersgraphql`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

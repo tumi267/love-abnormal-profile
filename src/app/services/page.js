@@ -2,6 +2,9 @@ import React from 'react';
 import styles from "./services.module.css";
 
 async function getServices() {
+  const baseUrl = process.env.NEXT_PUBLIC_DEV === 'prod' 
+  ? 'https://love-abnormal-profile.vercel.app/' 
+  : 'http://localhost:3000/';
   const query = `
     query {
       services {
@@ -19,7 +22,7 @@ async function getServices() {
   `;
 
   try {
-    const response = await fetch('http://localhost:3000/api/servicesgraphql', {
+    const response = await fetch(`${baseUrl}api/servicesgraphql`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
