@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import styles from './Blog.module.css';
+import Image from 'next/image';
 
 function Blog() {
   const [view, setView] = useState('articles'); // Switch between 'articles' and 'categories'

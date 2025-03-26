@@ -43,7 +43,7 @@ function Carousel({ carouselItems }) {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <Link href={`/blog/category/${item.id}`} passHref> {/* Link to the category with the item's id */}
+              <Link href={`/blog/${item.category}/${item.id}`} passHref> {/* Link to the category with the item's id */}
                 
                   {/* <img src={item.image} alt={item.title} className={styles.carouselImage} /> */}
                   <h3>{item.title}</h3>

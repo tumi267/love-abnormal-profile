@@ -4,8 +4,9 @@ import styles from "./EventCard.module.css";
 import Image from "next/image";
 import Link from "next/link";
 
-function EventCard({ event }) {
+function EventCard({ event,typeArticle=false}) {
   const regex = /^\/.*/;
+
   return (
     <div className={styles.card}>
       <div className={styles.imageContainer}>
@@ -21,7 +22,7 @@ function EventCard({ event }) {
         {event.href&&<Link href={event.href}  className={styles.ticketButton}>
           read articles
         </Link>}
-        {event.hrefA&&<Link href={event.hrefA}  className={styles.ticketButton}>
+        {typeArticle&&<Link href={`/blog/${event?.category}/${event?.id}`}  className={styles.ticketButton}>
           read more
         </Link>}
       </div>
