@@ -230,42 +230,6 @@ function ApiReg() {
     <div className={styles.container}>
       <h1 className={styles.title}>API Registration</h1>
 
-      {/* Add API Form */}
-      <form onSubmit={handleAddApi} className={styles.form}>
-        <div className={styles.formGroup}>
-          <label className={styles.label}>API:</label>
-          <input
-            type="text"
-            value={api}
-            onChange={(e) => setApi(e.target.value)}
-            className={styles.input}
-            required
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label className={styles.label}>API Key:</label>
-          <input
-            type="password"
-            value={apiKey}
-            onChange={(e) => setApiKey(e.target.value)}
-            className={styles.input}
-            required
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label className={styles.label}>API ID:</label>
-          <input
-            type="password"
-            value={apiId}
-            onChange={(e) => setApiId(e.target.value)}
-            className={styles.input}
-            required
-          />
-        </div>
-        <button type="submit" className={styles.button} disabled={loading}>
-          Add API
-        </button>
-      </form>
 
       {/* Display messages */}
       {message && <p className={styles.message}>{message}</p>}
@@ -408,6 +372,43 @@ function ApiReg() {
           <p>No APIs found.</p>
         )}
       </div>
+      <h2>Add API</h2>
+      {/* Add API Form */}
+      <form onSubmit={handleAddApi} className={styles.form}>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>API:</label>
+          <input
+            type="text"
+            value={api}
+            onChange={(e) => setApi(e.target.value)}
+            className={styles.input}
+            required
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>API Key:</label>
+          <input
+            type="password"
+            value={apiKey}
+            onChange={(e) => setApiKey(e.target.value)}
+            className={styles.input}
+            required
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>API ID:</label>
+          <input
+            type="password"
+            value={apiId}
+            onChange={(e) => setApiId(e.target.value)}
+            className={styles.input}
+            required
+          />
+        </div>
+        <button type="submit" className={styles.button} disabled={loading}>
+          Add API
+        </button>
+      </form>
     </div>
   );
 }

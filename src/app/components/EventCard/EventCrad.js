@@ -5,10 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 
 function EventCard({ event }) {
+  const regex = /^\/.*/;
   return (
     <div className={styles.card}>
       <div className={styles.imageContainer}>
-        {event.image&&<Image src={event.image} alt={event.title} width={300} height={200} />}
+        {event?.image && regex.test(event.image)&&<Image src={event.image} alt={event.title} width={300} height={200} />}
       </div>
       <div className={styles.content}>
         {event.title&&<h3>{event.title}</h3>}

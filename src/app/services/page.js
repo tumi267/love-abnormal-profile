@@ -1,7 +1,48 @@
-import React from 'react'
+import React from 'react';
 import styles from "./services.module.css";
 
-const services = [
+async function getServices() {
+  const query = `
+    query {
+      services {
+        id
+        title
+        titleMsg
+        subTitle
+        subMsg
+        services {
+          title
+          image
+        }
+      }
+    }
+  `;
+
+  try {
+    const response = await fetch('http://localhost:3000/api/servicesgraphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ query }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const result = await response.json();
+    return result.data.services;
+  } catch (error) {
+    console.error('Error fetching services:', error);
+    return [];
+  }
+}
+
+
+
+// Our Services data (kept as is)
+const ourServices = [
   {
     id: 1,
     name: "Nutritional Counseling",
@@ -22,65 +63,56 @@ const services = [
   },
 ];
 
-const bentoItems = [
-    { id: 1, title: "Individuals with Disabilities", emoji: "♿️" },
-    { id: 2, title: "Healthcare Professionals", emoji: "🏥" },
-    { id: 3, title: "Allied Health Professionals", emoji: "⚕️" },
-    { id: 4, title: "Families and Communities", emoji: "👨‍👩‍👧‍👦" },
-    { id: 5, title: "Educators & Advocates", emoji: "📚" },
-    { id: 6, title: "Researchers", emoji: "🔬" },
-    { id: 7, title: "And more!", emoji: "✨" },
-  ];
-function page() {
+async function Page() {
+  const servicesData = await getServices();
+  const firstService = servicesData[0] || {};
+
   return (
     <>
-    <div className={styles.container}>
+      <div className={styles.container}>
         <div className={styles.bentoContainer}>
-        <div className={styles.mission}>
-        <h2>Committed to Your Success</h2>
-        <p>
-          We are the nation’s premier center dedicated to promoting health and wellness through 
-          evidence-based programs, resources, campaigns, and strategic initiatives.
-        </p>
-        </div>
-        <div className={styles.bentogrid}>
-        {bentoItems.map((item) => (
-          <div key={item.id} className={styles.card}>
-            <span className={styles.emoji}>{item.emoji}</span>
-            <h3>{item.title}</h3>
+          <div className={styles.mission}>
+            <h2>{firstService.title }</h2>
+            <p>
+              {firstService.titleMsg }
+            </p>
           </div>
-        ))}
+          <div className={styles.bentogrid}>
+            {firstService.services.map((item) => (
+              <div key={item.id} className={styles.card}>
+                <span className={styles.emoji}>{item.emoji}</span>
+                <h3>{item.title}</h3>
+              </div>
+            ))}
+          </div>
         </div>
-        </div>
-    </div>
-        {/* Services Section */}
-        <div className={styles.serviceContainer}>
+      </div>
+
+      {/* Services Section */}
+      <div className={styles.serviceContainer}>
         <div className={styles.serviceContent}>
-        <h2>Discover how we can support you!</h2>
-        <p>
-          We offer a range of services and expertise to 
-          our community and organizational partners, ensuring you have the tools needed to 
-          promote health equity and advance inclusion.
-        </p>
+          <h2>{firstService.subTitle }</h2>
+          <p>
+            {firstService.subMsg }
+          </p>
         </div>
+      </div>
+
+      {/* Our Services Section (kept as is) */}
+      <div className={styles.service_contain}>
+        <h2>Our Services</h2>
+        <div className={styles.grid}>
+          {ourServices.map((service) => (
+            <div key={service.id} className={styles.card}>
+              <span className={styles.icon}>{service.icon}</span>
+              <h3>{service.name}</h3>
+              <p>{service.description}</p>
+            </div>
+          ))}
         </div>
-
-        <div className={styles.service_contain}>
-            <h2>Our Services</h2>
-      
-            <div className={styles.grid}>
-              {services.map((service) => (
-                <div key={service.id} className={styles.card}>
-                  <span className={styles.icon}>{service.icon}</span>
-                  <h3>{service.name}</h3>
-                  <p>{service.description}</p>
-                </div>
-              ))}
-            </div>
-            </div>
-
-            </>
+      </div>
+    </>
   );
 }
 
-export default page
+export default Page;

@@ -207,10 +207,48 @@ function EventManager() {
       }
     }
   };
-
+  const regex = /^\/.*/
+  
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Event Manager</h1>
+
+      {/* Event List */}
+      <h2 className={styles.subtitle}>Event List</h2>
+      <div className={styles.event_contain_list}>
+      {events.map((event) => (
+        <div key={event.id} className={styles.eventCard}>
+          <h3 className={styles.eventTitle}>{event.title}</h3>
+          <p className={styles.eventDescription}>{event.description}</p>
+          <p className={styles.eventDetail}><strong>Date:</strong> {event.date}</p>
+          <p className={styles.eventDetail}><strong>Location:</strong> {event.location}</p>
+          <p className={styles.eventDetail}>
+            <strong>Ticket Link:</strong>{' '}
+            <a href={event.ticketLink} target="_blank" rel="noopener noreferrer" className={styles.ticketLink}>
+              Buy Tickets
+            </a>
+          </p>
+          <div className={styles.eventImage}>
+            {event?.image && regex.test(event.image)&&
+              <Image
+                src={event?.image}
+                alt={event.title}
+                fill
+                className={styles.image}
+              />
+            }
+          </div>
+          <div className={styles.eventActions}>
+            <button onClick={() => handleEdit(event)} className={styles.editButton}>
+              Edit
+            </button>
+            <button onClick={() => handleDelete(event.id)} className={styles.deleteButton}>
+              Delete
+            </button>
+          </div>
+        </div>
+      ))}
+      </div>
 
       {/* Add/Edit Event Form */}
       <form onSubmit={handleSubmit} className={styles.form}>
@@ -291,41 +329,6 @@ function EventManager() {
           )}
         </div>
       </form>
-
-      {/* Event List */}
-      <h2 className={styles.subtitle}>Event List</h2>
-      {events.map((event) => (
-        <div key={event.id} className={styles.eventCard}>
-          <h3 className={styles.eventTitle}>{event.title}</h3>
-          <p className={styles.eventDescription}>{event.description}</p>
-          <p className={styles.eventDetail}><strong>Date:</strong> {event.date}</p>
-          <p className={styles.eventDetail}><strong>Location:</strong> {event.location}</p>
-          <p className={styles.eventDetail}>
-            <strong>Ticket Link:</strong>{' '}
-            <a href={event.ticketLink} target="_blank" rel="noopener noreferrer" className={styles.ticketLink}>
-              Buy Tickets
-            </a>
-          </p>
-          <div className={styles.eventImage}>
-            {event.image && (
-              <Image
-                src={event.image}
-                alt={event.title}
-                fill
-                className={styles.image}
-              />
-            )}
-          </div>
-          <div className={styles.eventActions}>
-            <button onClick={() => handleEdit(event)} className={styles.editButton}>
-              Edit
-            </button>
-            <button onClick={() => handleDelete(event.id)} className={styles.deleteButton}>
-              Delete
-            </button>
-          </div>
-        </div>
-      ))}
     </div>
   );
 }

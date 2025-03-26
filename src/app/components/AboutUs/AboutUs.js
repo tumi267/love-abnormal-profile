@@ -1,14 +1,12 @@
-// components/About.js
-'use client'; // Required for client-side rendering in Next.js 13
-
-import { useEffect, useState } from 'react';
-import styles from './AboutUs.module.css'; // Import the CSS module
+'use client'
+import { useEffect, useState } from 'react'
+import styles from './AboutUs.module.css'
 
 export default function About() {
-  const [aboutData, setAboutData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
+  const [aboutData, setAboutData] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [isEditing, setIsEditing] = useState(false)
   const [formData, setFormData] = useState({
     heroTitle: '',
     heroMsg: '',
@@ -17,9 +15,9 @@ export default function About() {
     team: [{ name: '', position: '' }],
     impactTitle: '',
     impactMsg: '',
-  });
+  })
 
-  // Fetch About Data
+  // Fetch About Data (your exact implementation)
   useEffect(() => {
     const fetchAboutData = async () => {
       try {
@@ -47,15 +45,15 @@ export default function About() {
               }
             `,
           }),
-        });
+        })
 
-        const result = await response.json();
+        const result = await response.json()
 
         if (result.errors) {
-          throw new Error(result.errors[0].message);
+          throw new Error(result.errors[0].message)
         }
 
-        setAboutData(result.data.about);
+        setAboutData(result.data.about)
         setFormData(result.data.about || {
           heroTitle: '',
           heroMsg: '',
@@ -64,55 +62,52 @@ export default function About() {
           team: [{ name: '', position: '' }],
           impactTitle: '',
           impactMsg: '',
-        });
+        })
       } catch (err) {
-        setError(err.message);
+        setError(err.message)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchAboutData();
-  }, []);
+    fetchAboutData()
+  }, [])
 
-  // Handle Input Change
+  // Your exact input handlers
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setFormData({
       ...formData,
       [name]: value,
-    });
-  };
+    })
+  }
 
-  // Handle Team Member Change
   const handleTeamMemberChange = (index, e) => {
-    const { name, value } = e.target;
-    const updatedTeam = [...formData.team];
-    updatedTeam[index][name] = value;
+    const { name, value } = e.target
+    const updatedTeam = [...formData.team]
+    updatedTeam[index][name] = value
     setFormData({
       ...formData,
       team: updatedTeam,
-    });
-  };
+    })
+  }
 
-  // Add Team Member
   const addTeamMember = () => {
     setFormData({
       ...formData,
       team: [...formData.team, { name: '', position: '' }],
-    });
-  };
+    })
+  }
 
-  // Remove Team Member
   const removeTeamMember = (index) => {
-    const updatedTeam = formData.team.filter((_, i) => i !== index);
+    const updatedTeam = formData.team.filter((_, i) => i !== index)
     setFormData({
       ...formData,
       team: updatedTeam,
-    });
-  };
+    })
+  }
 
-  // Save About Data (Add or Update)
+  // Your exact saveAbout implementation
   const saveAbout = async () => {
     try {
       const response = await fetch('/api/aboutgraphql', {
@@ -139,7 +134,7 @@ export default function About() {
             }
           `,
           variables: {
-            id: aboutData?.id || 'aboutDocumentId', // Use a fixed ID for the single document
+            id: aboutData?.id || 'aboutDocumentId',
             input: {
               heroTitle: formData.heroTitle,
               heroMsg: formData.heroMsg,
@@ -151,22 +146,22 @@ export default function About() {
             },
           },
         }),
-      });
+      })
 
-      const result = await response.json();
+      const result = await response.json()
 
       if (result.errors) {
-        throw new Error(result.errors[0].message);
+        throw new Error(result.errors[0].message)
       }
 
-      setAboutData(result.data.saveAbout);
-      setIsEditing(false);
+      setAboutData(result.data.saveAbout)
+      setIsEditing(false)
     } catch (err) {
-      setError(err.message);
+      setError(err.message)
     }
-  };
+  }
 
-  // Delete About Data
+  // Your exact deleteAbout implementation
   const deleteAbout = async () => {
     try {
       const response = await fetch('/api/aboutgraphql', {
@@ -181,36 +176,30 @@ export default function About() {
             }
           `,
           variables: {
-            id: aboutData?.id || 'aboutDocumentId', // Use a fixed ID for the single document
+            id: aboutData?.id || 'aboutDocumentId',
           },
         }),
-      });
+      })
 
-      const result = await response.json();
+      const result = await response.json()
 
       if (result.errors) {
-        throw new Error(result.errors[0].message);
+        throw new Error(result.errors[0].message)
       }
 
-      setAboutData(null); // Clear the data after deletion
+      setAboutData(null)
     } catch (err) {
-      setError(err.message);
+      setError(err.message)
     }
-  };
+  }
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) return <div className={styles.container}>Loading...</div>
+  if (error) return <div className={styles.container}>Error: {error}</div>
 
   return (
-    <div className={styles.aboutContainer}>
+    <div className={styles.container}>
       {isEditing ? (
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            saveAbout();
-          }}
-          className={styles.aboutForm}
-        >
+        <form onSubmit={(e) => { e.preventDefault(); saveAbout(); }} className={styles.editForm}>
           {/* Hero Section */}
           <section className={styles.formSection}>
             <h2>Hero Section</h2>
@@ -253,9 +242,9 @@ export default function About() {
 
           {/* Team Section */}
           <section className={styles.formSection}>
-            <h2>Team Section</h2>
+            <h2>Team Members</h2>
             {formData.team.map((member, index) => (
-              <div key={index} className={styles.teamMember}>
+              <div key={index} className={styles.teamMemberForm}>
                 <input
                   type="text"
                   name="name"
@@ -272,12 +261,20 @@ export default function About() {
                   placeholder="Position"
                   className={styles.formInput}
                 />
-                <button type="button" onClick={() => removeTeamMember(index)} className={styles.removeButton}>
+                <button 
+                  type="button" 
+                  onClick={() => removeTeamMember(index)} 
+                  className={styles.removeButton}
+                >
                   Remove
                 </button>
               </div>
             ))}
-            <button type="button" onClick={addTeamMember} className={styles.addButton}>
+            <button 
+              type="button" 
+              onClick={addTeamMember} 
+              className={styles.addButton}
+            >
               Add Team Member
             </button>
           </section>
@@ -304,42 +301,65 @@ export default function About() {
 
           <div className={styles.formActions}>
             <button type="submit" className={styles.saveButton}>Save</button>
-            <button type="button" onClick={() => setIsEditing(false)} className={styles.cancelButton}>
+            <button 
+              type="button" 
+              onClick={() => setIsEditing(false)} 
+              className={styles.cancelButton}
+            >
               Cancel
             </button>
           </div>
         </form>
       ) : (
         <>
-          {/* Display About Data */}
-          <section className={styles.aboutSection}>
-            <h1 className={styles.heroTitle}>{aboutData?.heroTitle}</h1>
-            <p className={styles.heroMessage}>{aboutData?.heroMsg}</p>
-          </section>
-          <section className={styles.aboutSection}>
-            <h2 className={styles.missionTitle}>{aboutData?.missionTitle}</h2>
-            <p className={styles.missionMessage}>{aboutData?.missionMsg}</p>
-          </section>
-          <section className={styles.aboutSection}>
-            <h2 className={styles.teamTitle}>Our Team</h2>
-            {aboutData?.team.map((member, index) => (
-              <div key={index} className={styles.teamMember}>
-                <h3 className={styles.teamMemberName}>{member.name}</h3>
-                <p className={styles.teamMemberPosition}>{member.position}</p>
-              </div>
-            ))}
-          </section>
-          <section className={styles.aboutSection}>
-            <h2 className={styles.impactTitle}>{aboutData?.impactTitle}</h2>
-            <p className={styles.impactMessage}>{aboutData?.impactMsg}</p>
+          {/* Hero Section */}
+          <section className={styles.hero}>
+            <h1>{aboutData?.heroTitle || 'About Our NPO'}</h1>
+            <p>{aboutData?.heroMsg || ''}</p>
           </section>
 
-          <div className={styles.actions}>
-            <button onClick={() => setIsEditing(true)} className={styles.editButton}>Edit</button>
-            <button onClick={deleteAbout} className={styles.deleteButton}>Delete</button>
+          {/* Mission Section */}
+          <section className={styles.mission}>
+            <h2>{aboutData?.missionTitle || 'Our Mission'}</h2>
+            <p>{aboutData?.missionMsg || ''}</p>
+          </section>
+
+          {/* Team Section */}
+          <section className={styles.team}>
+            <h2>Meet Our Team</h2>
+            <div className={styles.teamGrid}>
+              {aboutData?.team?.map((member, index) => (
+                <div key={index} className={styles.teamMember}>
+                  <h3>{member.name}</h3>
+                  <p>{member.position}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Impact Section */}
+          <section className={styles.impact}>
+            <h2>{aboutData?.impactTitle || 'Our Impact'}</h2>
+            <p>{aboutData?.impactMsg || ''}</p>
+          </section>
+
+          {/* Admin Actions */}
+          <div className={styles.adminActions}>
+            <button 
+              onClick={() => setIsEditing(true)} 
+              className={styles.editButton}
+            >
+              Edit
+            </button>
+            <button 
+              onClick={deleteAbout} 
+              className={styles.deleteButton}
+            >
+              Delete
+            </button>
           </div>
         </>
       )}
     </div>
-  );
+  )
 }

@@ -1,86 +1,76 @@
-import React from 'react'
-import styles from './sonsours.module.css'
-import Link from 'next/link'
+import React from 'react';
+import styles from './sonsours.module.css';
+import Link from 'next/link';
 import Image from 'next/image';
-function sponsours() {
-  const sponsorsData = [
-    {
-      name: "Department of Health",
-      logo: "", // Add logos to the public/images directory
-      link: "https://www.health.gov.za",
-    },
-    {
-      name: "Sport South Africa",
-      logo: "",
-      link: "https://www.srsa.gov.za",
-    },
-    {
-      name: "Wellness Warehouse",
-      logo: "",
-      link: "https://www.wellnesswarehouse.com",
-    },
-    {
-      name: "Discovery Health",
-      logo: "",
-      link: "https://www.discovery.co.za",
-    },
-    {
-      name: "Sanlam Health",
-      logo: "",
-      link: "https://www.sanlam.co.za",
-    },
-    {
-      name: "South African Sports Confederation and Olympic Committee (SASCOC)",
-      logo: "",
-      link: "https://www.sascoc.co.za",
-    },
-    {
-      name: "The Heart and Stroke Foundation South Africa",
-      logo: "",
-      link: "https://www.heartfoundation.co.za",
-    },
-    {
-      name: "Bidvest Wellness",
-      logo: "/images/bidvest-wellness.png",
-      link: "https://www.bidvest-wellness.co.za",
-    },
-    {
-      name: "Sizwe Health Fund",
-      logo: "",
-      link: "https://www.sizwehealth.co.za",
-    },
-    {
-      name: "Virgin Active South Africa",
-      logo: "",
-      link: "https://www.virginactive.co.za",
-    },
-  ];
-  
-  return (
-    <div className={styles.sponsorsPage}>
-    <h1 className={styles.pageTitle}>Our Sponsors</h1>
-    <div className={styles.sponsorGrid}>
-      {sponsorsData.map((sponsor, index) => (
-        <div key={index} className={styles.sponsorCard}>
-          {/* Use Next.js Link for internal and external links */}
-          <Link href={sponsor.link} passHref>
-            <div className={styles.cardContent}>
-              <div className={styles.sponsorLogo}>
-              <Image
-                src={sponsor.logo}
-                alt={sponsor.name}
-                fill
-                
-              />
-              </div>
-              <p className={styles.sponsorName}>{sponsor.name}</p>
-            </div>
-          </Link>
-        </div>
-      ))}
-    </div>
-  </div>
-  )
+
+async function getSponsors() {
+  const query = `
+    query {
+      sponsours {
+        id
+        name
+        image
+        url
+      }
+    }
+  `;
+
+  try {
+    const response = await fetch('http://localhost:3000/api/sponsoursgraphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ query }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const result = await response.json();
+    return result.data.sponsours;
+  } catch (error) {
+    console.error('Error fetching sponsors:', error);
+    return [];
+  }
 }
 
-export default sponsours
+async function Sponsours() {
+  const sponsorsData = await getSponsors();
+
+  return (
+    <div className={styles.sponsorsPage}>
+      <h1 className={styles.pageTitle}>Our Sponsors</h1>
+      <div className={styles.sponsorGrid}>
+        {sponsorsData.map((sponsor) => (
+          <div key={sponsor.id} className={styles.sponsorCard}>
+            <Link href={sponsor.url} passHref target="_blank" rel="noopener noreferrer">
+              <div className={styles.cardContent}>
+                <div className={styles.sponsorLogo}>
+                  {sponsor.image ? (
+                    <Image
+                      src={sponsor.image}
+                      alt={sponsor.name}
+                      width={150}
+                      height={100}
+                      style={{ objectFit: 'contain' }}
+                      onError={(e) => {
+                        e.currentTarget.src = '/images/default-sponsor.png';
+                      }}
+                    />
+                  ) : (
+                    <div className={styles.sponsorNameFallback}>{sponsor.name}</div>
+                  )}
+                </div>
+                <p className={styles.sponsorName}>{sponsor.name}</p>
+              </div>
+            </Link>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default Sponsours;

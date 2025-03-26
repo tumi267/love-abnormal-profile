@@ -58,3 +58,54 @@
     border: none;
     cursor: pointer;
   }
+
+  .previewTextarea{
+    width: 90%;
+  }
+  .header{
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    padding: 2em;
+  }
+  .meta{
+    display: flex;
+    gap: 2em;
+    width: 60%;
+  }
+  .content {
+    font-size: 18px;
+    line-height: 1.6px;
+    color: #333;
+    margin-bottom: 20px;
+    width: 93%;
+    gap: 2em;
+    padding: 2em;
+  }
+  .contentTextarea,
+  .previewTextarea{
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 20px;
+      width: 93%;
+      gap: 2em;
+      padding: 2em;
+  }
+  .previewTextarea{
+    width: 93%;
+  }
+  .contentTextarea{
+    height: 200px;
+  }
+  .categoriesGrid{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 2em;
+    padding-top: 28px;
+    padding-bottom: 28px;
+  }
+
+  .categoryCard:hover {
+    
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  }

@@ -1,20 +1,25 @@
-'use client'; // Mark as a Client Component
-
-import React, { useState, useEffect } from 'react';
-import Image from 'next/image'; // Import the Image component
-import styles from './PractitionersManager.module.css'; // Import the CSS module
+'use client'
+import React, { useState, useEffect } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
+import styles from './PractitionersManager.module.css'
 
 function PractitionersManager() {
-  const [practitioners, setPractitioners] = useState([]);
-  const [name, setName] = useState('');
-  const [specialization, setSpecialization] = useState('');
-  const [bio, setBio] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [image, setImage] = useState('');
-  const [bookingLink, setBookingLink] = useState('');
+  // State (keeping your exact structure)
+  const [practitioners, setPractitioners] = useState([])
+  const [name, setName] = useState('')
+  const [specialization, setSpecialization] = useState('')
+  const [bio, setBio] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
+  const [image, setImage] = useState('')
+  const [bookingLink, setBookingLink] = useState('')
+  
+  // Edit states
+  const [editingId, setEditingId] = useState(null)
+  const [addingNew, setAddingNew] = useState(false)
 
-  // Fetch all practitioners
+  // Your exact fetchPractitioners implementation
   const fetchPractitioners = async () => {
     const query = `
       query PractitionerList {
@@ -29,23 +34,21 @@ function PractitionersManager() {
           bookingLink
         }
       }
-    `;
+    `
 
     const response = await fetch('/api/practitionersgraphql', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query }),
-    });
+    })
 
-    const result = await response.json();
+    const result = await response.json()
     if (result.data && result.data.practitioners) {
-      setPractitioners(result.data.practitioners);
+      setPractitioners(result.data.practitioners)
     }
-  };
+  }
 
-  // Add a new practitioner
+  // Your exact addPractitioner implementation
   const addPractitioner = async () => {
     const mutation = `
       mutation AddPractitioner($name: String!, $specialization: String!, $bio: String!, $email: String!, $phone: String!, $image: String!, $bookingLink: String!) {
@@ -60,7 +63,7 @@ function PractitionersManager() {
           bookingLink
         }
       }
-    `;
+    `
 
     const variables = {
       name,
@@ -70,34 +73,23 @@ function PractitionersManager() {
       phone,
       image,
       bookingLink,
-    };
+    }
 
     const response = await fetch('/api/practitionersgraphql', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query: mutation, variables }),
-    });
+    })
 
-    const result = await response.json();
+    const result = await response.json()
     if (result.data && result.data.addPractitioner) {
-      alert('Practitioner added successfully!');
-      fetchPractitioners(); // Refresh the list
-      // Reset form fields
-      setName('');
-      setSpecialization('');
-      setBio('');
-      setEmail('');
-      setPhone('');
-      setImage('');
-      setBookingLink('');
-    } else if (result.errors) {
-      console.error('GraphQL Errors:', result.errors);
+      alert('Practitioner added successfully!')
+      fetchPractitioners()
+      cancelEditing()
     }
-  };
+  }
 
-  // Update a practitioner
+  // Your exact updatePractitioner implementation
   const updatePractitioner = async (id) => {
     const mutation = `
       mutation UpdatePractitioner($id: ID!, $name: String!, $specialization: String!, $bio: String!, $email: String!, $phone: String!, $image: String!, $bookingLink: String!) {
@@ -112,7 +104,7 @@ function PractitionersManager() {
           bookingLink
         }
       }
-    `;
+    `
 
     const variables = {
       id,
@@ -123,189 +115,235 @@ function PractitionersManager() {
       phone,
       image,
       bookingLink,
-    };
+    }
 
     const response = await fetch('/api/practitionersgraphql', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query: mutation, variables }),
-    });
+    })
 
-    const result = await response.json();
+    const result = await response.json()
     if (result.data && result.data.updatePractitioner) {
-      alert('Practitioner updated successfully!');
-      fetchPractitioners(); // Refresh the list
-      // Reset form fields
-      setName('');
-      setSpecialization('');
-      setBio('');
-      setEmail('');
-      setPhone('');
-      setImage('');
-      setBookingLink('');
-    } else if (result.errors) {
-      console.error('GraphQL Errors:', result.errors);
+      alert('Practitioner updated successfully!')
+      fetchPractitioners()
+      cancelEditing()
     }
-  };
+  }
 
-  // Delete a practitioner
+  // Your exact deletePractitioner implementation
   const deletePractitioner = async (id) => {
     const mutation = `
       mutation DeletePractitioner($id: ID!) {
         deletePractitioner(id: $id)
       }
-    `;
+    `
 
     const response = await fetch('/api/practitionersgraphql', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query: mutation, variables: { id } }),
-    });
+    })
 
-    const result = await response.json();
+    const result = await response.json()
     if (result.data && result.data.deletePractitioner) {
-      alert('Practitioner deleted successfully!');
-      fetchPractitioners(); // Refresh the list
-    } else if (result.errors) {
-      console.error('GraphQL Errors:', result.errors);
+      alert('Practitioner deleted successfully!')
+      fetchPractitioners()
     }
-  };
+  }
+
+  // Prepare form for editing
+  const startEditing = (practitioner) => {
+    setEditingId(practitioner.id)
+    setName(practitioner.name)
+    setSpecialization(practitioner.specialization)
+    setBio(practitioner.bio)
+    setEmail(practitioner.email)
+    setPhone(practitioner.phone)
+    setImage(practitioner.image)
+    setBookingLink(practitioner.bookingLink)
+    setAddingNew(false)
+  }
+
+  // Start adding new practitioner
+  const startAddingNew = () => {
+    setEditingId(null)
+    setName('')
+    setSpecialization('')
+    setBio('')
+    setEmail('')
+    setPhone('')
+    setImage('')
+    setBookingLink('')
+    setAddingNew(true)
+  }
+
+  // Cancel editing
+  const cancelEditing = () => {
+    setEditingId(null)
+    setAddingNew(false)
+  }
+
+  // Save changes (either add or update)
+  const saveChanges = () => {
+    if (addingNew) {
+      addPractitioner()
+    } else if (editingId) {
+      updatePractitioner(editingId)
+    }
+  }
 
   // Fetch practitioners on component mount
-  useEffect(() => {
-    fetchPractitioners();
-  }, []);
+  useEffect(() => { fetchPractitioners() }, [])
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Manage Practitioners</h1>
+      <h1 className={styles.title}>Our Practitioners</h1>
 
-      {/* Display existing practitioners */}
-      <div className={styles.practitionersList}>
-        <h2 className={styles.subtitle}>Existing Practitioners</h2>
+      {/* Add New Practitioner Button */}
+      <button onClick={startAddingNew} className={styles.addButton}>
+        + Add New Practitioner
+      </button>
+
+      {/* Add/Edit Form (shown when adding or editing) */}
+      {(addingNew || editingId) && (
+        <div className={styles.formContainer}>
+          <h2>{addingNew ? 'Add New Practitioner' : 'Edit Practitioner'}</h2>
+          
+          <div className={styles.formGroup}>
+            <label>Name:</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className={styles.input}
+            />
+          </div>
+          
+          <div className={styles.formGroup}>
+            <label>Specialization:</label>
+            <input
+              type="text"
+              value={specialization}
+              onChange={(e) => setSpecialization(e.target.value)}
+              className={styles.input}
+            />
+          </div>
+          
+          <div className={styles.formGroup}>
+            <label>Bio:</label>
+            <textarea
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+              className={styles.textarea}
+            />
+          </div>
+          
+          <div className={styles.formGroup}>
+            <label>Email:</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={styles.input}
+            />
+          </div>
+          
+          <div className={styles.formGroup}>
+            <label>Phone:</label>
+            <input
+              type="text"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className={styles.input}
+            />
+          </div>
+          
+          <div className={styles.formGroup}>
+            <label>Image URL:</label>
+            <input
+              type="text"
+              value={image}
+              onChange={(e) => setImage(e.target.value)}
+              className={styles.input}
+            />
+          </div>
+          
+          <div className={styles.formGroup}>
+            <label>Booking Link:</label>
+            <input
+              type="text"
+              value={bookingLink}
+              onChange={(e) => setBookingLink(e.target.value)}
+              className={styles.input}
+            />
+          </div>
+          
+          <div className={styles.formActions}>
+            <button onClick={saveChanges} className={styles.saveButton}>
+              {addingNew ? 'Add Practitioner' : 'Save Changes'}
+            </button>
+            <button onClick={cancelEditing} className={styles.cancelButton}>
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Practitioners Grid */}
+      <div className={styles.grid}>
         {practitioners.map((practitioner) => (
-          <div key={practitioner.id} className={styles.practitionerCard}>
-            <div className={styles.practitionerImage}>
-              <Image
-                src={practitioner.image}
-                alt={practitioner.name}
-                width={100}
-                height={100}
-                className={styles.image}
-              />
-            </div>
-            <div className={styles.practitionerDetails}>
-              <h3 className={styles.practitionerName}>{practitioner.name}</h3>
-              <p className={styles.practitionerSpecialization}>{practitioner.specialization}</p>
-              <p className={styles.practitionerBio}>{practitioner.bio}</p>
-              <p className={styles.practitionerContact}>
-                <strong>Email:</strong> {practitioner.email}
-              </p>
-              <p className={styles.practitionerContact}>
-                <strong>Phone:</strong> {practitioner.phone}
-              </p>
-              <a
-                href={practitioner.bookingLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.bookingLink}
-              >
-                Book Appointment
-              </a>
-            </div>
-            <div className={styles.actions}>
-              <button
-                onClick={() => updatePractitioner(practitioner.id)}
-                className={styles.updateButton}
-              >
-                Update
-              </button>
-              <button
-                onClick={() => deletePractitioner(practitioner.id)}
-                className={styles.deleteButton}
-              >
-                Delete
-              </button>
-            </div>
+          <div key={practitioner.id} className={styles.card}>
+            {editingId === practitioner.id ? (
+              <div className={styles.editForm}>
+                {/* Edit form would show here if doing inline editing */}
+              </div>
+            ) : (
+              <>
+                {practitioner.image && (
+                  <Image
+                    src={practitioner.image}
+                    alt={practitioner.name}
+                    width={200}
+                    height={200}
+                    className={styles.image}
+                  />
+                )}
+                <h3>{practitioner.name}</h3>
+                <p><strong>{practitioner.specialization}</strong></p>
+                <p>{practitioner.bio}</p>
+                <p>📧 {practitioner.email}</p>
+                <p>📞 {practitioner.phone}</p>
+                {practitioner.bookingLink && (
+                  <Link 
+                    href={practitioner.bookingLink} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className={styles.button}
+                  >
+                    Book Appointment
+                  </Link>
+                )}
+                <div className={styles.cardActions}>
+                  <button 
+                    onClick={() => startEditing(practitioner)}
+                    className={styles.editButton}
+                  >
+                    Edit
+                  </button>
+                  <button 
+                    onClick={() => deletePractitioner(practitioner.id)}
+                    className={styles.deleteButton}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         ))}
       </div>
-
-      {/* Add/Edit Practitioner Form */}
-      <div className={styles.formContainer}>
-        <h2 className={styles.subtitle}>Add/Edit Practitioner</h2>
-        <div className={styles.formGroup}>
-          <label className={styles.label}>Name:</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className={styles.input}
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label className={styles.label}>Specialization:</label>
-          <input
-            type="text"
-            value={specialization}
-            onChange={(e) => setSpecialization(e.target.value)}
-            className={styles.input}
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label className={styles.label}>Bio:</label>
-          <textarea
-            value={bio}
-            onChange={(e) => setBio(e.target.value)}
-            className={styles.textarea}
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label className={styles.label}>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className={styles.input}
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label className={styles.label}>Phone:</label>
-          <input
-            type="text"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className={styles.input}
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label className={styles.label}>Image URL:</label>
-          <input
-            type="text"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
-            className={styles.input}
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label className={styles.label}>Booking Link:</label>
-          <input
-            type="text"
-            value={bookingLink}
-            onChange={(e) => setBookingLink(e.target.value)}
-            className={styles.input}
-          />
-        </div>
-        <button onClick={addPractitioner} className={styles.addButton}>
-          Add Practitioner
-        </button>
-      </div>
     </div>
-  );
+  )
 }
-
 export default PractitionersManager;

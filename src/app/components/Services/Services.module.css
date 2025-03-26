@@ -185,3 +185,165 @@
   .submitButton:hover {
     background-color: #1e88e5;
   }
+
+
+
+
+
+
+/* front end style */
+
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Service Contain */
+.service_contain {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 48px;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Grid for Services */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin: 48px 0;
+  max-width: 1080px;
+  width: 80%;
+  margin: 0 auto;
+}
+
+/* Card Styling */
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.299);
+}
+
+/* Icon Styling */
+.icon {
+  font-size: 40px;
+}
+
+/* Bento Container */
+.bentoContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 20px;
+  padding: 40px;
+}
+
+/* Mission Section */
+.mission {
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+  text-align: left;
+}
+
+.mission h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.mission p {
+  font-size: 16px;
+  color: #555;
+}
+
+/* Bento Grid */
+.bentogrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  flex: 1;
+  max-width: 600px;
+  margin-bottom: 48px;
+}
+
+/* Emoji Styling */
+.emoji {
+  font-size: 32px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* Service Container */
+.serviceContainer {
+  text-align: center;
+  margin: 48px auto;
+  background-color: #f0f0f0;
+  padding-top: 48px;
+  padding-bottom: 48px;
+}
+
+/* Service Content */
+.serviceContent {
+  max-width: 1080px;
+  width: 80%;
+  margin: 0 auto;
+}
+
+/* Responsive Styles for Mobile */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
+  }
+
+  .bentoContainer {
+    flex-direction: column; /* Stack mission and bentogrid vertically */
+    padding: 20px;
+  }
+
+  .mission {
+    text-align: center; /* Center text on mobile */
+    max-width: 100%;
+  }
+
+  .bentogrid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Smaller cards on mobile */
+  }
+
+  .serviceContainer {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+
+  .serviceContent {
+    width: 90%; /* Increase width for better readability */
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: 1fr; /* 1 column on mobile */
+  }
+
+  .bentogrid {
+    grid-template-columns: 1fr; /* Smaller cards on very small screens */
+  }
+
+  .card {
+    padding: 15px; /* Reduce padding on mobile */
+  }
+
+  .icon {
+    font-size: 32px; /* Smaller icons on mobile */
+  }
+
+  .emoji {
+    font-size: 24px; /* Smaller emojis on mobile */
+  }
+}

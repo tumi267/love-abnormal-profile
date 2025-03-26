@@ -1,0 +1,84 @@
+.separator {
+    background-color: #f0f0f0;
+    padding: 48px 0;
+  }
+  
+  .pitch {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 1080px;
+    width: 80%;
+    margin: 0 auto;
+    gap: 3em;
+    margin-top: 48px;
+  }
+  
+  .callToAction {
+    display: flex;
+    justify-content: center;
+    margin-top: 48px;
+    margin-bottom: 48px;
+  }
+  
+  /* Mobile Responsive Styles */
+  @media (max-width: 768px) {
+    .pitch {
+      grid-template-columns: 1fr; /* Switch to a single column layout */
+      width: 90%; /* Increase width for better mobile layout */
+      gap: 2em; /* Reduce gap for smaller screens */
+      margin-top: 24px; /* Adjust margin for smaller screens */
+    }
+  
+    .separator {
+      padding: 24px 0; /* Reduce padding for smaller screens */
+    }
+  
+    .callToAction {
+      margin-top: 24px;
+      margin-bottom: 24px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .pitch {
+      width: 95%; /* Further increase width for very small screens */
+      gap: 1.5em; /* Further reduce gap */
+      margin-top: 16px; /* Further adjust margin */
+    }
+  
+    .separator {
+      padding: 16px 0; /* Further reduce padding */
+    }
+  
+    .callToAction {
+      margin-top: 16px;
+      margin-bottom: 16px;
+    }
+  }
+  
+  /* Enable hover only on non-touch devices */
+  @media (hover: hover) and (pointer: fine) {
+    /* Add hover styles here if needed */
+  }
+  
+  @media (prefers-reduced-motion) {
+    /* Add reduced motion styles here if needed */
+  }
+  
+  /* Tablet and Smaller Desktop */
+  @media (min-width: 701px) and (max-width: 1120px) {
+    /* Add styles for tablet and smaller desktop here if needed */
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    /* Add dark mode styles here if needed */
+  }
+  
+  @keyframes rotate {
+    from {
+      /* Add initial rotation state here if needed */
+    }
+    to {
+      /* Add final rotation state here if needed */
+    }
+  }

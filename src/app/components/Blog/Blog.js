@@ -11,7 +11,8 @@ function Blog() {
   const [editingArticle, setEditingArticle] = useState(null);
   const [categories, setCategories] = useState([]);
   const [articles, setArticles] = useState([]);
-
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [showAddCategoryForm, setShowAddCategoryForm] = useState(false);
   // Fetch categories and articles on component mount
   useEffect(() => {
     fetchCategories();
@@ -287,6 +288,16 @@ function Blog() {
       {view === 'articles' ? (
         <div>
           <h3>Articles</h3>
+          
+        {/* Add Article Section */}
+        <div className={styles.addArticleSection}>
+        <button 
+        onClick={() => setShowAddForm(!showAddForm)}
+        className={styles.toggleAddFormButton}
+        >
+        {showAddForm ? 'Hide Add Form' : 'Add New Article'}
+          </button>
+        </div>
           <table className={styles.table}>
             <thead>
               <tr>
@@ -316,7 +327,7 @@ function Blog() {
           </table>
 
           {/* Add Article Form */}
-          <div className={styles.form}>
+          {showAddForm&&<div className={styles.form}>
             <h4>Add New Article</h4>
             <input
               type="text"
@@ -370,98 +381,161 @@ function Blog() {
               onChange={(e) => setNewArticle({ ...newArticle, author: e.target.value })}
             />
             <button onClick={handleAddArticle}>Add Article</button>
-          </div>
+          </div>}
 
           {/* Edit Article Form */}
-          {editingArticle && (
-            <div className={styles.form}>
-              <h4>Edit Article</h4>
-              <input
-                type="text"
-                placeholder="Title"
-                value={editingArticle.title}
-                onChange={(e) => setEditingArticle({ ...editingArticle, title: e.target.value })}
-              />
-              <select
-                value={editingArticle.category}
-                onChange={(e) => setEditingArticle({ ...editingArticle, category: e.target.value })}
-              >
-                <option value="">Select a category</option>
-                {cleancategories && cleancategories.map((category) => (
-                  <option key={category.id} value={category.title}>
-                    {category.title}
-                  </option>
-                ))}
-              </select>
-              <textarea
-                placeholder="Preview"
-                value={editingArticle.preview}
-                onChange={(e) => setEditingArticle({ ...editingArticle, preview: e.target.value })}
-              />
-              <input
-                type="date"
-                placeholder="Date"
-                value={editingArticle.date}
-                onChange={(e) => setEditingArticle({ ...editingArticle, date: e.target.value })}
-              />
-              <input
-                type="text"
-                placeholder="Href"
-                value={editingArticle.href}
-                onChange={(e) => setEditingArticle({ ...editingArticle, href: e.target.value })}
-              />
-              <input
-                type="text"
-                placeholder="Image URL"
-                value={editingArticle.image}
-                onChange={(e) => setEditingArticle({ ...editingArticle, image: e.target.value })}
-              />
-              <textarea
-                placeholder="Content"
-                value={editingArticle.content}
-                onChange={(e) => setEditingArticle({ ...editingArticle, content: e.target.value })}
-              />
-              <input
-                type="text"
-                placeholder="Author"
-                value={editingArticle.author}
-                onChange={(e) => setEditingArticle({ ...editingArticle, author: e.target.value })}
-              />
-              <button onClick={handleEditArticle}>Save Changes</button>
-              <button onClick={() => setEditingArticle(null)}>Cancel</button>
-            </div>
+          
+            {editingArticle && (
+              <div className={styles.articleContainer}>
+                {/* Edit Article Header */}
+                <header className={styles.header}>
+                  <input
+                    type="text"
+                    className={styles.titleInput}
+                    value={editingArticle.title}
+                    onChange={(e) => setEditingArticle({ ...editingArticle, title: e.target.value })}
+                  />
+                  <div className={styles.meta}>
+                    By <input
+                      type="text"
+                      className={styles.authorInput}
+                      value={editingArticle.author}
+                      onChange={(e) => setEditingArticle({ ...editingArticle, author: e.target.value })}
+                    /> 
+                    <input
+                      type="date"
+                      className={styles.dateInput}
+                      value={editingArticle.date}
+                      onChange={(e) => setEditingArticle({ ...editingArticle, date: e.target.value })}
+                    />
+                  </div>
+                </header>
+            
+                {/* Featured Image URL Input */}
+                <div className={styles.featuredImage}>
+                  <input
+                    type="text"
+                    placeholder="Featured Image URL"
+                    value={editingArticle.image}
+                    onChange={(e) => setEditingArticle({ ...editingArticle, image: e.target.value })}
+                  />
+                  {editingArticle.image && (
+                    <Image src={editingArticle.image} fill alt={editingArticle.title} />
+                  )}
+                </div>
+            
+                {/* Article Content */}
+                <div className={styles.content}>
+                  <select
+                    value={editingArticle.category}
+                    onChange={(e) => setEditingArticle({ ...editingArticle, category: e.target.value })}
+                    className={styles.categorySelect}
+                  >
+                    <br/>
+                    <option value="">Select a category</option>
+                    {cleancategories && cleancategories.map((category) => (
+                      <option key={category.id} value={category.title}>
+                        {category.title}
+                      </option>
+                    ))}
+                  </select>
+            
+                  <textarea
+                    placeholder="Preview"
+                    value={editingArticle.preview}
+                    onChange={(e) => setEditingArticle({ ...editingArticle, preview: e.target.value })}
+                    className={styles.previewTextarea}
+                  />
+            
+                  <input
+                    type="text"
+                    placeholder="Href"
+                    value={editingArticle.href}
+                    onChange={(e) => setEditingArticle({ ...editingArticle, href: e.target.value })}
+                    className={styles.hrefInput}
+                    hidden
+                  />
+            
+                  <textarea
+                    placeholder="Content"
+                    value={editingArticle.content}
+                    onChange={(e) => setEditingArticle({ ...editingArticle, content: e.target.value })}
+                    className={styles.contentTextarea}
+                  />
+            
+                  {/* Additional Images */}
+                  <div className={styles.breakingImage}>
+                    <input
+                      type="text"
+                      placeholder="Additional Image URL"
+                      value={editingArticle.additionalImage || ''}
+                      onChange={(e) => setEditingArticle({ ...editingArticle, additionalImage: e.target.value })}
+                    />
+                    {editingArticle.additionalImage && (
+                      <Image src={editingArticle.additionalImage} fill alt="Additional article image" />
+                    )}
+                  </div>
+                </div>
+            
+                {/* Action Buttons */}
+                <div className={styles.formActions}>
+                  <button onClick={handleEditArticle} className={styles.saveButton}>Save Changes</button>
+                  <button onClick={() => setEditingArticle(null)} className={styles.cancelButton}>Cancel</button>
+                </div>
+              </div>
+           
           )}
         </div>
       ) : (
         <div>
-          <h3>Categories</h3>
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Image</th>
-                <th>Href</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cleancategories?.map((category) => (
-                <tr key={category?.id}>
-                  <td>{category?.title}</td>
-                  <td>{category?.description}</td>
-                  <td>{category?.image}</td>
-                  <td>{category?.href}</td>
-                  <td>
-                    <button onClick={() => setEditingCategory(category)}>Edit</button>
-                    <button onClick={() => handleDeleteCategory(category.id)}>Delete</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          {/* Add Category Form */}
+        <h3>Categories</h3>
+        
+        {/* Add Category Section */}
+        <div className={styles.addArticleSection}>
+          <button 
+            onClick={() => setShowAddCategoryForm(!showAddCategoryForm)}
+            className={styles.toggleAddFormButton}
+          >
+            {showAddCategoryForm ? 'Hide Add Form' : 'Add New Category'}
+          </button>
+        </div>
+      
+          {/* Categories Grid */}
+  <div className={styles.categoriesGrid}>
+    {cleancategories?.map((category) => (
+      <div key={category?.id} className={styles.categoryCard}>
+        <div className={styles.categoryActions}>
+          <button 
+            onClick={() => setEditingCategory(category)}
+            className={`${styles.actionButton} ${styles.editButton}`}
+          >
+            Edit
+          </button>
+          <button 
+            onClick={() => handleDeleteCategory(category.id)}
+            className={`${styles.actionButton} ${styles.deleteButton}`}
+          >
+            Delete
+          </button>
+        </div>
+        
+        {category?.image && (
+          <img 
+            src={category.image} 
+            alt={category.title} 
+            className={styles.categoryImage}
+          />
+        )}
+        
+        <h4>{category?.title}</h4>
+        <p>{category?.description}</p>
+        <small>Link: {category?.href}</small>
+      </div>
+    ))}
+  </div>
+      
+        {/* Add Category Form - now conditionally rendered */}
+        {showAddCategoryForm && (
           <div className={styles.form}>
             <h4>Add New Category</h4>
             <input
@@ -489,40 +563,43 @@ function Blog() {
             />
             <button onClick={handleAddCategory}>Add Category</button>
           </div>
-
-          {/* Edit Category Form */}
-          {editingCategory && (
-            <div className={styles.form}>
-              <h4>Edit Category</h4>
-              <input
-                type="text"
-                placeholder="Title"
-                value={editingCategory.title}
-                onChange={(e) => setEditingCategory({ ...editingCategory, title: e.target.value })}
-              />
-              <textarea
-                placeholder="Description"
-                value={editingCategory.description}
-                onChange={(e) => setEditingCategory({ ...editingCategory, description: e.target.value })}
-              />
-              <input
-                type="text"
-                placeholder="Image URL"
-                value={editingCategory.image}
-                onChange={(e) => setEditingCategory({ ...editingCategory, image: e.target.value })}
-              />
-              <input
-                type="text"
-                placeholder="Href"
-                value={editingCategory.href}
-                onChange={(e) => setEditingCategory({ ...editingCategory, href: e.target.value })}
-              />
-              <button onClick={handleEditCategory}>Save Changes</button>
-              <button onClick={() => setEditingCategory(null)}>Cancel</button>
-            </div>
-          )}
-        </div>
+        )}
+      
+        {/* Edit Category Form */}
+        {editingCategory && (
+          <div className={styles.form}>
+            <h4>Edit Category</h4>
+            <input
+              type="text"
+              placeholder="Title"
+              value={editingCategory.title}
+              onChange={(e) => setEditingCategory({ ...editingCategory, title: e.target.value })}
+            />
+            <textarea
+              placeholder="Description"
+              value={editingCategory.description}
+              onChange={(e) => setEditingCategory({ ...editingCategory, description: e.target.value })}
+            />
+            <input
+              type="text"
+              placeholder="Image URL"
+              value={editingCategory.image}
+              onChange={(e) => setEditingCategory({ ...editingCategory, image: e.target.value })}
+            />
+            <input
+              type="text"
+              placeholder="Href"
+              value={editingCategory.href}
+              onChange={(e) => setEditingCategory({ ...editingCategory, href: e.target.value })}
+            />
+            <button onClick={handleEditCategory}>Save Changes</button>
+            <button onClick={() => setEditingCategory(null)}>Cancel</button>
+          </div>
+        )}
+        
+      </div>
       )}
+      
     </div>
   );
 }

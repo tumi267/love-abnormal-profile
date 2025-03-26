@@ -1,26 +1,91 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styles from './donations.module.css';
+import jwt from 'jsonwebtoken'; // Ensure jwt is installed
 
 function DonationsPage() {
-  // PayFast sandbox credentials (replace with your actual credentials)
-  const merchantId = '10037768'; // Example sandbox merchant ID
-  const merchantKey = 'vgjgkbfmipf79'; // Example sandbox merchant key
-  const [amount, setAmount] = useState('');
-  useEffect(()=>{
-    const updateAmount = () => {
-      setAmount('100'); // Set the amount to a new value
+  const [amount, setAmount] = useState('100'); // Default amount to be set
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState('');
+
+  // Handle donation submission
+  const handleDonateClick = async (e) => {
+    e.preventDefault(); // Prevent immediate form submission
+    setIsLoading(true);
+
+    // Fetch API details
+    const fetchApiDetails = async () => {
+      const query = `
+        query GetApis {
+          getApis {
+            id
+            api
+            token
+          }
+        }
+      `;
+
+      try {
+        const response = await fetch('/api/apiregistrationgraphql', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ query }),
+        });
+
+        const result = await response.json();
+
+        if (result.errors) {
+          throw new Error(result.errors[0].message);
+        }
+
+        if (result.data.getApis) {
+          // Decode the JWT for each API to get apiKey and apiId
+          const apiDetails = result.data.getApis.map((api) => {
+            const decoded = jwt.decode(api.token);
+            return {
+              id: api.id,
+              api: api.api,
+              apiKey: decoded.apiKey,
+              apiId: decoded.apiId,
+            };
+          });
+
+          const payfastApi = apiDetails.find((api) => api.api === 'payfast');
+          if (payfastApi) {
+            const { apiKey, apiId } = payfastApi;
+
+            // Proceed with donation if PayFast credentials are found
+            const formData = {
+              merchant_id: apiId,
+              merchant_key: apiKey,
+              return_url: 'http://localhost:3000/donation/thank-you',
+              cancel_url: 'http://localhost:3000/donation/cancel',
+              amount: amount,
+              item_name: 'Donation to Our Cause',
+            };
+
+            // Redirect to PayFast for processing
+            window.location.href = `https://sandbox.payfast.co.za/eng/process?merchant_id=${formData.merchant_id}&merchant_key=${formData.merchant_key}&return_url=${formData.return_url}&cancel_url=${formData.cancel_url}&amount=${formData.amount}&item_name=${formData.item_name}`;
+          } else {
+            setMessage('PayFast API credentials not found.');
+          }
+        } else {
+          setMessage('No APIs found.');
+        }
+      } catch (error) {
+        setMessage(`Error: ${error.message}`);
+      } finally {
+        setIsLoading(false);
+      }
     };
-    updateAmount()
-  },[])
 
-  // Payment details
+    // Trigger the API fetching before donation submission
+    fetchApiDetails();
+  };
 
-  const itemName = 'Donation to Our Cause';
-  const returnUrl = 'http://localhost:3000/donation/thank-you'; // Redirect after payment
-  const cancelUrl = 'http://localhost:3000/donation/cancel'; // Redirect if payment is canceled
-  
   return (
     <div className={styles.container}>
       <h1 className={styles.heading}>Make a Donation</h1>
@@ -29,19 +94,7 @@ function DonationsPage() {
       </p>
 
       {/* PayFast Embedded Form */}
-      <form
-        action="https://sandbox.payfast.co.za/eng/process"
-        method="POST"
-        className={styles.payfastForm}
-      >
-        <input type="hidden" name="merchant_id" value={merchantId} />
-        <input type="hidden" name="merchant_key" value={merchantKey} />
-        <input type="hidden" name="return_url" value={returnUrl} />
-        <input type="hidden" name="cancel_url" value={cancelUrl} />
-        
-        <input type="hidden" name="amount" value={amount}  />
-        <input type="hidden" name="item_name" value={itemName} />
-
+      <form onSubmit={handleDonateClick}>
         <div className={styles.formGroup}>
           <label htmlFor="amount">Donation Amount (ZAR):</label>
           <input
@@ -49,7 +102,7 @@ function DonationsPage() {
             id="amount"
             name="amount"
             value={amount}
-            onChange={(e)=>{setAmount(e.target.value)}}
+            onChange={(e) => setAmount(e.target.value)}
             className={styles.input}
           />
         </div>
@@ -66,8 +119,8 @@ function DonationsPage() {
           />
         </div>
 
-        <button type="submit" className={styles.submitButton}>
-          Donate R{amount}
+        <button type="submit" className={styles.submitButton} disabled={isLoading}>
+          {isLoading ? 'Processing...' : `Donate R${amount}`}
         </button>
       </form>
 

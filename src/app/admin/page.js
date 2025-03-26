@@ -11,12 +11,14 @@ import Sponsors from '../components/Sponsors/Sponsors';
 import ApiReg from '../components/ApiReg/ApiReg';
 import AboutUs from '../components/AboutUs/AboutUs';
 import Contact from '../components/Contact/Contact';
+import HomeAdmin from '../components/HomeAdmin/HomeAdmin'
 
 function AdminPage() {
-  const [selectedComponent, setSelectedComponent] = useState('Blog'); // Default component
+  const [selectedComponent, setSelectedComponent] = useState('HomeAdmin'); // Default component
 
   // Map component names to their corresponding components
   const components = {
+    HomeAdmin,
     Blog,
     Events,
     Services,
@@ -42,6 +44,7 @@ function AdminPage() {
         {/* Menu Items */}
         <ul className={styles.menuList}>
           {[
+            { name: 'Home', component: 'HomeAdmin' },
             { name: 'Blog', component: 'Blog' },
             { name: 'Events', component: 'Events' },
             { name: 'Services', component: 'Services' },

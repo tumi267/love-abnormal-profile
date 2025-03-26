@@ -124,3 +124,117 @@
   .addButton:hover {
     background-color: #45a049;
   }
+
+
+
+  .sponsorsPage {
+    padding: 40px;
+    text-align: center;
+    background-color: #f8f9fa;
+  }
+  
+  /* Page Title */
+  .pageTitle {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    color: #333;
+  }
+  
+  /* Sponsor Grid */
+  .sponsorGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 80%;
+    max-width: 1080px;
+    margin-left: auto;
+    margin-right: auto;
+    gap: 2em;
+  }
+  
+  /* Sponsor Card */
+  .sponsorCard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.291);
+    padding: 20px;
+    transition: transform 0.3s ease-in-out;
+    text-decoration: none;
+  }
+  
+  .sponsorCard:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Card Content */
+  .cardContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Sponsor Logo */
+  .sponsorLogo {
+    width: 100%; /* Ensure the logo container takes full width */
+    height: 100px; /* Fixed height for logos */
+    position: relative; /* Required for Next.js Image component */
+    margin-bottom: 20px;
+  }
+  
+  /* Sponsor Name */
+  .sponsorName {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+  }
+  
+  /* Responsive Styles for Mobile */
+  @media (max-width: 768px) {
+    .sponsorsPage {
+      padding: 20px; /* Reduce padding on mobile */
+    }
+  
+    .pageTitle {
+      font-size: 2rem; /* Smaller font size for mobile */
+    }
+  
+    .sponsorGrid {
+      grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
+      width: 90%; /* Increase width for better spacing */
+      gap: 1em; /* Reduce gap between cards */
+    }
+  
+    .sponsorCard {
+      padding: 15px; /* Reduce padding on mobile */
+    }
+  
+    .sponsorLogo {
+      height: 80px; /* Smaller logo height on mobile */
+    }
+  
+    .sponsorName {
+      font-size: 1rem; /* Smaller font size for mobile */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .sponsorGrid {
+      grid-template-columns: 1fr; /* 1 column on mobile */
+      width: 100%; /* Full width on mobile */
+    }
+  
+    .sponsorCard {
+      padding: 10px; /* Further reduce padding on very small screens */
+    }
+  
+    .sponsorLogo {
+      height: 60px; /* Smaller logo height on very small screens */
+    }
+  
+    .sponsorName {
+      font-size: 0.9rem; /* Smaller font size for very small screens */
+    }
+  }

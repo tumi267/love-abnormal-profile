@@ -19,7 +19,7 @@ function DonationRes() {
             <div className={styles.container}>
               <h1>Payment Canceled</h1>
               <p>Your payment was not completed. If this was a mistake, you can try again.</p>
-              <Link href="/donations">Try Again</Link>
+              <Link href="/donation">Try Again</Link>
             </div>
           );
     }

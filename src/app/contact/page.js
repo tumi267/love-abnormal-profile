@@ -4,9 +4,61 @@ import React from 'react';
 import Link from 'next/link';
 import styles from './contact.module.css';
 
+async function getContactData() {
+  const query = `
+    query {
+      contact {
+        id
+        whatsapp
+        email
+        address
+      }
+    }
+  `;
+
+  try {
+    const response = await fetch('/api/contactgraphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ query }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const result = await response.json();
+    return result.data.contact;
+  } catch (error) {
+    console.error('Error fetching contact data:', error);
+    return null;
+  }
+}
+
 function ContactPage() {
-  let number = '0123456789';
-  const address = 'Sandton, Johannesburg, South Africa';
+  const [contactData, setContactData] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    async function fetchData() {
+      const data = await getContactData();
+      setContactData(data);
+      setLoading(false);
+    }
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <div className={styles.loading}>Loading contact information...</div>;
+  }
+
+  // Fallback values if no contact data is available
+  const whatsappNumber = contactData?.whatsapp ;
+  const email = contactData?.email;
+  const address = contactData?.address;
+
   return (
     <div className={styles.container}>
       <h1 className={styles.heading}>Contact Us</h1>
@@ -14,15 +66,15 @@ function ContactPage() {
       <div className={styles.contactDetails}>
         <p>
           <strong>Email:</strong>{' '}
-          <Link href="mailto:info@example.com" className={styles.link}>
-            info@example.com
+          <Link href={`mailto:${email}`} className={styles.link}>
+            {email}
           </Link>
         </p>
 
         <p>
           <strong>WhatsApp:</strong>{' '}
           <Link
-            href={`https://wa.me/${number}`}
+            href={`https://wa.me/${whatsappNumber}`}
             target="_blank"
             rel="noopener noreferrer"
             className={styles.link}
