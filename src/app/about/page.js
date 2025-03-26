@@ -4,6 +4,7 @@ import React from 'react';
 import { motion, useInView } from 'framer-motion';
 import styles from './AboutUs.module.css';
 import Image from 'next/image';
+import Loading from '../loading';
 
 async function getAboutData() {
   const query = `
@@ -58,9 +59,7 @@ function AboutUs() {
     fetchData();
   }, []);
 
-  if (loading) {
-    return <div className={styles.loading}>Loading...</div>;
-  }
+  if (loading) return <Loading/>
 
   if (!aboutData) {
     return <div className={styles.error}>Failed to load data</div>;

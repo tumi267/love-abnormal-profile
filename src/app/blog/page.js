@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import Carousel from '../components/ThreeDCarosel/ThreeDCarosel'
 import EventCard from '../components/EventCard/EventCrad'
 import styles from './blog.module.css'
+import Loading from '../loading'
 
 function BlogPage() {
   const [articles, setArticles] = useState([])
@@ -76,7 +77,7 @@ function BlogPage() {
     setSelectedCategory(prev => prev === categoryTitle ? null : categoryTitle)
   }
 
-  if (isLoading) return <div className={styles.loading}>Loading...</div>
+  if (isLoading) return <Loading/>
   if (error) return <div className={styles.error}>{error}</div>
 
   return (

@@ -12,6 +12,7 @@ import Slider from './components/slider/Slider'
 import dataimage from '/public/data.png'
 import fingerPrint from '/public/fingerprint.png'
 import training from '/public/training.png'
+import Loading from './loading'
 
 export default function Home() {
   const [homeData, setHomeData] = useState(null)
@@ -76,7 +77,7 @@ export default function Home() {
           body: JSON.stringify({
             query: `
               query {
-                articles(limit: 10) {
+                articles(limit: 3) {
                   id
                   title
                   preview
@@ -108,7 +109,7 @@ export default function Home() {
   }, [])
 
   if (isLoading) {
-    return <div className={styles.loading}>Loading...</div>
+    return <Loading/>
   }
 
 

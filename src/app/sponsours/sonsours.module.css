@@ -64,7 +64,10 @@
   color: #333;
   margin-top: 10px;
 }
-
+.links{
+text-decoration: none;
+color: black;
+}
 /* Responsive Styles for Mobile */
 @media (max-width: 768px) {
   .sponsorsPage {

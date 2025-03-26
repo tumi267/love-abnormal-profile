@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./blog.module.css";
 import { useParams } from "next/navigation";
 import Image from "next/image";
+import Loading from "@/app/loading";
 
 function BlogArticle() {
   const params = useParams();
@@ -33,7 +34,7 @@ function BlogArticle() {
     fetchArticle();
   }, [id]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loading/>
   if (!article) return <p>Article not found.</p>;
 
   return (

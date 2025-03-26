@@ -48,5 +48,8 @@
     animation-play-state: paused;
   }
   
-  
+  .text_content{
+    width: 100%;
+    text-wrap:balance;
+  }
   

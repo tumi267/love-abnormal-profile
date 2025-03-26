@@ -10,7 +10,10 @@
     max-width: 1080px;
     padding: 48px;
   }
-  
+  .links{
+    text-decoration: none;
+    color: black;
+  }
   .carousel {
     position: relative;
     width: 27.78%;

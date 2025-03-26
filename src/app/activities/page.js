@@ -45,7 +45,7 @@ async function getEvents() {
 
 async function Page() {
   const events = await getEvents();
-
+  
   return (
     <main>
       <Hero

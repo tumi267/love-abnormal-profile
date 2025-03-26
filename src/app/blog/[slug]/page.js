@@ -5,6 +5,7 @@ import React, { useEffect ,useState} from 'react'
 import styles from './blog.module.css'
 import { useParams } from 'next/navigation';
 import Link from 'next/link'
+import Loading from '@/app/loading'
 
 
 function Categories() {
@@ -103,10 +104,12 @@ useEffect(() => {
 
   // Add resize event listener
   window.addEventListener('resize', updateSideMenuDisplay);
-
+  
   // Cleanup
   return () => window.removeEventListener('resize', updateSideMenuDisplay);
       }, [drawerisopen]);
+      
+      if (loading) return <Loading/>
       return (
         <div className={styles.mainContent}>
         {mobile&&<button onClick={()=>{toggleDrawer()}}>burger</button>}

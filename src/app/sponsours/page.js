@@ -48,7 +48,7 @@ async function Sponsours() {
       <div className={styles.sponsorGrid}>
         {sponsorsData.map((sponsor) => (
           <div key={sponsor.id} className={styles.sponsorCard}>
-            <Link href={sponsor.url} passHref target="_blank" rel="noopener noreferrer">
+            <Link href={sponsor.url} passHref target="_blank" className={styles.links} rel="noopener noreferrer">
               <div className={styles.cardContent}>
                 <div className={styles.sponsorLogo}>
                   {sponsor.image ? (
