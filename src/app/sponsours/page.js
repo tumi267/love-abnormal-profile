@@ -1,10 +1,11 @@
-'use client';
-import React, { useEffect, useState } from 'react';
+// app/sponsours/page.js
+import React from 'react';
 import styles from './sonsours.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export const revalidate = 3600;
+// This will make the page render on server at request time
+export const dynamic = 'force-dynamic'; // Equivalent to getServerSideProps
 
 async function getSponsors() {
   const query = `
@@ -18,10 +19,11 @@ async function getSponsors() {
     }
   `;
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}api/sponsoursgraphql`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/sponsoursgraphql`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query }),
+    cache: 'no-store' // Important for SSR
   });
 
   if (!response.ok) {
