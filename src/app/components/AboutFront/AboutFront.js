@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import styles from './About.module.css';
 import Image from 'next/image';
-import Loading from '../loading';
+import Loading from '../../loading';
 
 function AboutFront({ aboutData, isLoading }) {
   if (isLoading) {
