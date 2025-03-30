@@ -1,59 +1,78 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import styles from './admin.module.css';
-import Blog from '../components/Blog/Blog';
-import Events from '../components/Events/Events';
-import Services from '../components/Services/Services';
-import Doctors from '../components/Doctors/Doctors';
-import Sponsors from '../components/Sponsors/Sponsors';
-import ApiReg from '../components/ApiReg/ApiReg';
-import AboutUs from '../components/AboutUs/AboutUs';
-import Contact from '../components/Contact/Contact';
-import HomeAdmin from '../components/HomeAdmin/HomeAdmin'
+import dynamic from 'next/dynamic';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
-function AdminPage() {
-  const [selectedComponent, setSelectedComponent] = useState('HomeAdmin'); // Default component
+// Dynamically import all admin components with loading states
+const AdminComponents = {
+  HomeAdmin: dynamic(() => import('../components/HomeAdmin/HomeAdmin'), {
+    loading: () => <LoadingSpinner />,
+    ssr: false
+  }),
+  Blog: dynamic(() => import('../components/Blog/Blog'), {
+    loading: () => <LoadingSpinner />,
+    ssr: false
+  }),
+  Events: dynamic(() => import('../components/Events/Events'), {
+    loading: () => <LoadingSpinner />,
+    ssr: false
+  }),
+  Services: dynamic(() => import('../components/Services/Services'), {
+    loading: () => <LoadingSpinner />,
+    ssr: false
+  }),
+  Doctors: dynamic(() => import('../components/Doctors/Doctors'), {
+    loading: () => <LoadingSpinner />,
+    ssr: false
+  }),
+  Sponsors: dynamic(() => import('../components/Sponsors/Sponsors'), {
+    loading: () => <LoadingSpinner />,
+    ssr: false
+  }),
+  ApiReg: dynamic(() => import('../components/ApiReg/ApiReg'), {
+    loading: () => <LoadingSpinner />,
+    ssr: false
+  }),
+  AboutUs: dynamic(() => import('../components/AboutUs/AboutUs'), {
+    loading: () => <LoadingSpinner />,
+    ssr: false
+  }),
+  Contact: dynamic(() => import('../components/Contact/Contact'), {
+    loading: () => <LoadingSpinner />,
+    ssr: false
+  }),
+};
 
-  // Map component names to their corresponding components
-  const components = {
-    HomeAdmin,
-    Blog,
-    Events,
-    Services,
-    Doctors,
-    Sponsors,
-    ApiReg,
-    AboutUs,
-    Contact,
-  };
+const menuItems = [
+  { name: 'Home', component: 'HomeAdmin' },
+  { name: 'Blog', component: 'Blog' },
+  { name: 'Events', component: 'Events' },
+  { name: 'Services', component: 'Services' },
+  { name: 'Doctors', component: 'Doctors' },
+  { name: 'Sponsors', component: 'Sponsors' },
+  { name: 'API Reg', component: 'ApiReg' },
+  { name: 'About Us', component: 'AboutUs' },
+  { name: 'Contact', component: 'Contact' },
+];
 
-  // Get the currently selected component
-  const ComponentToRender = components[selectedComponent];
+export default function AdminPage() {
+  const [selectedComponent, setSelectedComponent] = useState('HomeAdmin');
+  const CurrentComponent = AdminComponents[selectedComponent];
 
   return (
     <div className={styles.adminContainer}>
-      {/* Side Menu */}
+      {/* Sidebar Navigation */}
       <motion.div
         className={styles.sideMenu}
-        initial={{ width: 250 }} // Initial width
-        animate={{ width: 250 }} // Always open for now
+        initial={{ width: 250 }}
+        animate={{ width: 250 }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
       >
-        {/* Menu Items */}
         <ul className={styles.menuList}>
-          {[
-            { name: 'Home', component: 'HomeAdmin' },
-            { name: 'Blog', component: 'Blog' },
-            { name: 'Events', component: 'Events' },
-            { name: 'Services', component: 'Services' },
-            { name: 'Doctors', component: 'Doctors' },
-            { name: 'Sponsors', component: 'Sponsors' },
-            { name: 'API Reg', component: 'ApiReg' },
-            { name: 'About Us', component: 'AboutUs' },
-            { name: 'Contact', component: 'Contact' },
-          ].map((item, index) => (
+          {menuItems.map((item, index) => (
             <motion.li
               key={index}
               initial={{ opacity: 0, x: -20 }}
@@ -61,8 +80,10 @@ function AdminPage() {
               transition={{ delay: index * 0.1 }}
             >
               <button
-                className={styles.menuLink}
-                onClick={() => setSelectedComponent(item.component)} // Update selected component
+                className={`${styles.menuLink} ${
+                  selectedComponent === item.component ? styles.active : ''
+                }`}
+                onClick={() => setSelectedComponent(item.component)}
               >
                 {item.name}
               </button>
@@ -71,14 +92,13 @@ function AdminPage() {
         </ul>
       </motion.div>
 
-      {/* Main Content */}
+      {/* Main Content Area */}
       <main className={styles.mainContent}>
         <h1>Admin Dashboard</h1>
-        {/* Render the selected component */}
-        <ComponentToRender />
+        <Suspense fallback={<LoadingSpinner />}>
+          <CurrentComponent />
+        </Suspense>
       </main>
     </div>
   );
 }
-
-export default AdminPage;
