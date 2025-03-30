@@ -1,46 +1,50 @@
-'use client'
-import React from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 import styles from './sonsours.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
+import Loading from '../loading';
 
-async function Sponsours() {
-  async function getSponsors() {
-    const baseUrl = process.env.NEXT_PUBLIC_DEV === 'prod' 
-    ? 'https://love-abnormal-profile.vercel.app/' 
-    : 'http://localhost:3000/';
-    const query = `
-      query {
-        sponsours {
-          id
-          name
-          image
-          url
+function Sponsours() {
+  const [sponsorsData, setSponsorsData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function getSponsors() {
+      const query = `
+        query {
+          sponsours {
+            id
+            name
+            image
+            url
+          }
         }
+      `;
+
+      try {
+        const response = await fetch(`/api/sponsoursgraphql`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query }),
+        });
+
+        if (!response.ok) throw new Error('Network response was not ok');
+
+        const result = await response.json();
+        setSponsorsData(result.data.sponsours);
+      } catch (error) {
+        console.error('Error fetching sponsors:', error);
+        setSponsorsData([]);
+      } finally {
+        setLoading(false);
       }
-    `;
-  
-    try {
-      const response = await fetch(`${baseUrl}api/sponsoursgraphql`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ query }),
-      });
-  
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-  
-      const result = await response.json();
-      return result.data.sponsours;
-    } catch (error) {
-      console.error('Error fetching sponsors:', error);
-      return [];
     }
-  }
-  const sponsorsData = await getSponsors();
+
+    getSponsors();
+  }, []);
+
+  if (loading) return <Loading />;
 
   return (
     <div className={styles.sponsorsPage}>
@@ -58,6 +62,7 @@ async function Sponsours() {
                       width={150}
                       height={100}
                       style={{ objectFit: 'contain' }}
+                      onError={(e) => (e.currentTarget.src = '/images/default-sponsor.png')}
                     />
                   ) : (
                     <div className={styles.sponsorNameFallback}>{sponsor.name}</div>
