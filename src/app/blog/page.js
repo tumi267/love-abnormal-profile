@@ -13,10 +13,15 @@ function BlogPage() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
+    const abortController = new AbortController()
+    
     const fetchData = async () => {
       try {
+        setIsLoading(true)
+        setError(null)
+
         // Fetch categories
-        const categoriesResponse = await fetch('/api/bloggraphql', {
+        const categoriesResponse = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/bloggraphql`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -31,17 +36,23 @@ function BlogPage() {
                 }
               }
             `
-          })
+          }),
+          signal: abortController.signal
         })
+
+        if (!categoriesResponse.ok) {
+          throw new Error('Failed to fetch categories')
+        }
+
         const categoriesResult = await categoriesResponse.json()
         setCategories(categoriesResult.data?.categories || [])
 
-        // Fetch articles based on selected category
+        // Fetch articles
         const articlesQuery = selectedCategory 
           ? `articles(category: "${selectedCategory}", limit: 10)`
           : 'articles(limit: 10)'
 
-        const articlesResponse = await fetch('/api/bloggraphql', {
+        const articlesResponse = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/bloggraphql`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -58,56 +69,72 @@ function BlogPage() {
                 }
               }
             `
-          })
+          }),
+          signal: abortController.signal
         })
+
+        if (!articlesResponse.ok) {
+          throw new Error('Failed to fetch articles')
+        }
+
         const articlesResult = await articlesResponse.json()
         setArticles(articlesResult.data?.articles || [])
       } catch (err) {
-        setError('Failed to fetch data. Please try again later.')
-        console.error('Error fetching data:', err)
+        if (err.name !== 'AbortError') {
+          setError('Failed to fetch data. Please try again later.')
+          console.error('Error fetching data:', err)
+        }
       } finally {
         setIsLoading(false)
       }
     }
 
     fetchData()
+
+    return () => abortController.abort()
   }, [selectedCategory])
 
   const handleCategorySelect = (categoryTitle) => {
     setSelectedCategory(prev => prev === categoryTitle ? null : categoryTitle)
   }
 
-  if (isLoading) return <Loading/>
+  if (isLoading) return <Loading />
   if (error) return <div className={styles.error}>{error}</div>
 
   return (
     <div className={styles.container}>
       {/* Articles Carousel */}
       <div className={styles.carouselSection}>
-
-        <Carousel carouselItems={articles} />
+        {articles.length > 0 ? (
+          <Carousel carouselItems={articles} />
+        ) : (
+          <p className={styles.noArticles}>No articles found</p>
+        )}
       </div>
 
       {/* Categories Section */}
       <div className={styles.categoriesSection}>
         <div className={styles.header}>
           <h2>Categories</h2>
-
         </div>
         
         <div className={styles.card_contain}>
-          {categories.map((category) => (
-            <div 
-              key={category.id} 
-              className={`${styles.categoryCard} ${selectedCategory === category.title ? styles.selected : ''}`}
-              onClick={() => handleCategorySelect(category.title)}
-            >
-              <EventCard 
-                event={category}
-                isSelected={selectedCategory === category.title}
-              />
-            </div>
-          ))}
+          {categories.length > 0 ? (
+            categories.map((category) => (
+              <div 
+                key={category.id} 
+                className={`${styles.categoryCard} ${selectedCategory === category.title ? styles.selected : ''}`}
+                onClick={() => handleCategorySelect(category.title)}
+              >
+                <EventCard 
+                  event={category}
+                  isSelected={selectedCategory === category.title}
+                />
+              </div>
+            ))
+          ) : (
+            <p className={styles.noCategories}>No categories available</p>
+          )}
         </div>
       </div>
     </div>
