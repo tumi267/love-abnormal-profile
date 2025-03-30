@@ -12,6 +12,7 @@ const typeDefs = gql`
   type TeamMember {
     name: String!
     position: String!
+    image: String
   }
 
   input TeamMemberInput {

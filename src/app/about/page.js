@@ -26,7 +26,7 @@ async function getAboutData() {
       }
     `;
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/aboutgraphql`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}api/aboutgraphql`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query }),
@@ -53,7 +53,7 @@ export default async function AboutPage() {
     return (
       <div className={styles.errorContainer}>
         <h2>Unable to load content</h2>
-        <p>Please try refreshing the page or check back later.</p>
+        <p>process.env.NEXT_PUBLIC_SITE_URL</p>
       </div>
     );
   }
