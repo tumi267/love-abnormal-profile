@@ -119,9 +119,7 @@ function TeamMember({ member, index }) {
           alt={member.name} 
           fill
           style={{ objectFit: 'cover' }}
-          onError={(e) => {
-            e.currentTarget.src = '/team-default.jpg';
-          }}
+
         />}
       </div>
       <p>

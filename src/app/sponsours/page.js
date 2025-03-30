@@ -45,11 +45,14 @@ function Sponsours() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getSponsors().then((data) => {
-      setSponsorsData(data);
-      setLoading(false);
-    });
+    if (typeof window !== 'undefined') { // Ensures it's only running on the client
+      getSponsors().then((data) => {
+        setSponsorsData(data);
+        setLoading(false);
+      });
+    }
   }, []);
+  
 
   if (loading) {
     return <Loading />;
