@@ -8,9 +8,7 @@ function DonationsPage() {
   const [amount, setAmount] = useState('100'); // Default amount to be set
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
-  const baseUrl = process.env.NEXT_PUBLIC_DEV === 'prod' 
-  ? 'https://love-abnormal-profile.vercel.app/' 
-  : 'http://localhost:3000/';
+
   // Handle donation submission
   const handleDonateClick = async (e) => {
     e.preventDefault(); // Prevent immediate form submission
