@@ -24,7 +24,7 @@ function DisplayLinkGrid() {
         </Link>
       </div>
       <div className={`${styles.box} ${styles.box4}`}>
-        <Link className={styles.link} href={'/blog/food'} >
+        <Link className={styles.link} href={'/blog/nutrition'} >
           <Image src={'https://images.unsplash.com/photo-1474480109237-15a7ca8f0685?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGZvb2QlMjBhbmQlMjBoZWFsdGh8ZW58MHx8MHx8fDA%3D'} fill  alt='food and recipes'/>
           <h3 className={styles.title}>food and recipes</h3>  
         </Link>
