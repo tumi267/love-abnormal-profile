@@ -66,7 +66,7 @@ function Sponsours() {
                 <div className={styles.sponsorLogo}>
                   {sponsor.image ? (
                     <Image
-                      src={sponsor.image}
+                      src={sponsor.imag||'/next.svg'}
                       alt={sponsor.name}
                       width={150}
                       height={100}
