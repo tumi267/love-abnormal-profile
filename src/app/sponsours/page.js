@@ -1,13 +1,15 @@
 'use client'
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './sonsours.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
+import Loading from '../loading';
 
 async function getSponsors() {
   const baseUrl = process.env.NEXT_PUBLIC_DEV === 'prod' 
-  ? 'https://love-abnormal-profile.vercel.app/' 
-  : 'http://localhost:3000/';
+    ? 'https://love-abnormal-profile.vercel.app/' 
+    : 'http://localhost:3000/';
+    
   const query = `
     query {
       sponsours {
@@ -22,9 +24,7 @@ async function getSponsors() {
   try {
     const response = await fetch(`${baseUrl}api/sponsoursgraphql`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query }),
     });
 
@@ -40,8 +40,20 @@ async function getSponsors() {
   }
 }
 
-async function Sponsours() {
-  const sponsorsData = await getSponsors();
+function Sponsours() {
+  const [sponsorsData, setSponsorsData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getSponsors().then((data) => {
+      setSponsorsData(data);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className={styles.sponsorsPage}>
@@ -59,9 +71,7 @@ async function Sponsours() {
                       width={150}
                       height={100}
                       style={{ objectFit: 'contain' }}
-                      onError={(e) => {
-                        e.currentTarget.src = '/images/default-sponsor.png';
-                      }}
+                      onError={(e) => (e.currentTarget.src = '/images/default-sponsor.png')}
                     />
                   ) : (
                     <div className={styles.sponsorNameFallback}>{sponsor.name}</div>
