@@ -1,6 +1,5 @@
 'use client';
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import styles from './AboutUs.module.css';
 import Image from 'next/image';
@@ -18,6 +17,7 @@ async function getAboutData() {
         team {
           name
           position
+          image
         }
         impactTitle
         impactMsg
@@ -26,20 +26,19 @@ async function getAboutData() {
   `;
 
   try {
-    const response = await fetch('/api/aboutgraphql', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/aboutgraphql`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query }),
+      cache: 'no-store'
     });
 
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const result = await response.json();
-    return result.data.about;
+    return result.data?.about || null;
   } catch (error) {
     console.error('Error fetching about data:', error);
     return null;
@@ -47,84 +46,122 @@ async function getAboutData() {
 }
 
 function AboutUs() {
-  const [aboutData, setAboutData] = React.useState(null);
-  const [loading, setLoading] = React.useState(true);
+  const [aboutData, setAboutData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
+    const abortController = new AbortController();
+
     async function fetchData() {
-      const data = await getAboutData();
-      setAboutData(data);
-      setLoading(false);
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await getAboutData();
+        if (!data) {
+          throw new Error('No data received');
+        }
+        setAboutData(data);
+      } catch (err) {
+        setError('Failed to load about data');
+        console.error('Fetch error:', err);
+      } finally {
+        setLoading(false);
+      }
     }
+
     fetchData();
+
+    return () => abortController.abort();
   }, []);
 
-  if (loading) return <Loading/>
-
-  if (!aboutData) {
-    return <div className={styles.error}>Failed to load data</div>;
-  }
+  if (loading) return <Loading />;
+  if (error) return <div className={styles.error}>{error}</div>;
+  if (!aboutData) return <div className={styles.error}>No data available</div>;
 
   return (
     <div className={styles.container}>
-      <section className={styles.hero}>
-        {/* image fill */}
+      {/* Hero Section */}
+      <motion.section 
+        className={styles.hero}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+      >
         <h1>{aboutData.heroTitle}</h1>
-        <p>{aboutData.heroMsg }</p>
-      </section>
+        <p>{aboutData.heroMsg}</p>
+      </motion.section>
 
-      <section className={styles.mission}>
+      {/* Mission Section */}
+      <motion.section 
+        className={styles.mission}
+        initial={{ y: 50, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6 }}
+      >
         <h2>{aboutData.missionTitle}</h2>
         <p>{aboutData.missionMsg}</p>
-      </section>
+      </motion.section>
 
+      {/* Team Section */}
       <section className={styles.team}>
         <h2>Meet Our Team</h2>
         <div className={styles.teamGrid}>
-          {aboutData.team?.map((member, index) => (
-            <TeamMember key={index} member={member} index={index} />
-          ))}
+          {aboutData.team?.length > 0 ? (
+            aboutData.team.map((member, index) => (
+              <TeamMember key={`${member.name}-${index}`} member={member} index={index} />
+            ))
+          ) : (
+            <p className={styles.noTeam}>No team members to display</p>
+          )}
         </div>
       </section>
 
-      <section className={styles.impact}>
-        <h2>{aboutData.impactTitle }</h2>
+      {/* Impact Section */}
+      <motion.section 
+        className={styles.impact}
+        initial={{ y: 50, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6 }}
+      >
+        <h2>{aboutData.impactTitle}</h2>
         <p>{aboutData.impactMsg}</p>
-      </section>
+      </motion.section>
     </div>
   );
 }
 
 function TeamMember({ member, index }) {
   const ref = React.useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
-
-  const variants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0 },
-  };
+  const isInView = useInView(ref, { once: true, margin: '-50px' });
 
   return (
     <motion.div
       ref={ref}
       className={styles.member}
-      variants={variants}
-      initial="hidden"
-      animate={isInView ? 'visible' : 'hidden'}
-      transition={{ delay: index * 0.3, duration: 0.5 }}
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ delay: index * 0.1, duration: 0.5 }}
     >
       <div className={styles.image_contain}>
-      {member.image&&<Image 
-          src={member.image } 
-          alt={member.name} 
-          fill
-          style={{ objectFit: 'cover' }}
-
-        />}
+        {member.image ? (
+          <Image 
+            src={member.image} 
+            alt={member.name} 
+            fill
+            style={{ objectFit: 'cover' }}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        ) : (
+          <div className={styles.imagePlaceholder} />
+        )}
       </div>
-      <p>
-        {member.name} - {member.position}
-      </p>
+      <div className={styles.memberInfo}>
+        <h3>{member.name}</h3>
+        <p>{member.position}</p>
+      </div>
     </motion.div>
   );
 }
