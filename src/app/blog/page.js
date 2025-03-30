@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic'
+'use client'
 import { useState, useEffect } from 'react'
 import Carousel from '../components/ThreeDCarosel/ThreeDCarosel'
 import EventCard from '../components/EventCard/EventCrad'
