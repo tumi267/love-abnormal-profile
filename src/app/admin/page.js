@@ -4,44 +4,45 @@ import React, { useState, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import styles from './admin.module.css';
 import dynamic from 'next/dynamic';
-import LoadingSpinner from '@/components/LoadingSpinner';
+import Loading from '../loading';
+
 
 // Dynamically import all admin components with loading states
 const AdminComponents = {
   HomeAdmin: dynamic(() => import('../components/HomeAdmin/HomeAdmin'), {
-    loading: () => <LoadingSpinner />,
+    loading: () => <Loading />,
     ssr: false
   }),
   Blog: dynamic(() => import('../components/Blog/Blog'), {
-    loading: () => <LoadingSpinner />,
+    loading: () => <Loading />,
     ssr: false
   }),
   Events: dynamic(() => import('../components/Events/Events'), {
-    loading: () => <LoadingSpinner />,
+    loading: () => <Loading/>,
     ssr: false
   }),
   Services: dynamic(() => import('../components/Services/Services'), {
-    loading: () => <LoadingSpinner />,
+    loading: () => <Loading />,
     ssr: false
   }),
   Doctors: dynamic(() => import('../components/Doctors/Doctors'), {
-    loading: () => <LoadingSpinner />,
+    loading: () => <Loading />,
     ssr: false
   }),
   Sponsors: dynamic(() => import('../components/Sponsors/Sponsors'), {
-    loading: () => <LoadingSpinner />,
+    loading: () => <Loading />,
     ssr: false
   }),
   ApiReg: dynamic(() => import('../components/ApiReg/ApiReg'), {
-    loading: () => <LoadingSpinner />,
+    loading: () => <Loading />,
     ssr: false
   }),
   AboutUs: dynamic(() => import('../components/AboutUs/AboutUs'), {
-    loading: () => <LoadingSpinner />,
+    loading: () => <Loading />,
     ssr: false
   }),
   Contact: dynamic(() => import('../components/Contact/Contact'), {
-    loading: () => <LoadingSpinner />,
+    loading: () => <Loading />,
     ssr: false
   }),
 };
@@ -95,7 +96,7 @@ export default function AdminPage() {
       {/* Main Content Area */}
       <main className={styles.mainContent}>
         <h1>Admin Dashboard</h1>
-        <Suspense fallback={<LoadingSpinner />}>
+        <Suspense fallback={<Loading/>}>
           <CurrentComponent />
         </Suspense>
       </main>
