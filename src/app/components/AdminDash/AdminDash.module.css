@@ -1,0 +1,51 @@
+.adminContainer {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  .sideMenu {
+    width: 250px;
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .menuList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .menuList li {
+    margin-bottom: 15px;
+  }
+  
+  .menuLink {
+    background: none;
+    border: none;
+    color: white;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .menuLink:hover {
+    background-color: #34495e;
+  }
+  
+  .mainContent {
+    flex: 1;
+    padding: 20px;
+    background-color: #f4f7f6;
+  }
+  
+  .mainContent h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
