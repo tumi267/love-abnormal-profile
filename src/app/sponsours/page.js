@@ -18,7 +18,7 @@ async function getSponsors() {
     }
   `;
 
-  const response = await fetch(`${process.env.API_URL}/graphql`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}api/sponsoursgraphql`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query }),
