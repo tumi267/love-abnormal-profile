@@ -66,12 +66,12 @@ function Sponsours() {
                 <div className={styles.sponsorLogo}>
                   {sponsor.image ? (
                     <Image
-                      src={sponsor.imag||'/next.svg'}
+                      src={sponsor.imag}
                       alt={sponsor.name}
                       width={150}
                       height={100}
                       style={{ objectFit: 'contain' }}
-                      onError={(e) => (e.currentTarget.src = '/images/default-sponsor.png')}
+                      
                     />
                   ) : (
                     <div className={styles.sponsorNameFallback}>{sponsor.name}</div>
