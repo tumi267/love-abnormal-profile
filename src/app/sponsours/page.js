@@ -1,62 +1,46 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styles from './sonsours.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
-import Loading from '../loading';
 
-async function getSponsors() {
-  const baseUrl = process.env.NEXT_PUBLIC_DEV === 'prod' 
+async function Sponsours() {
+  async function getSponsors() {
+    const baseUrl = process.env.NEXT_PUBLIC_DEV === 'prod' 
     ? 'https://love-abnormal-profile.vercel.app/' 
     : 'http://localhost:3000/';
-    
-  const query = `
-    query {
-      sponsours {
-        id
-        name
-        image
-        url
+    const query = `
+      query {
+        sponsours {
+          id
+          name
+          image
+          url
+        }
       }
-    }
-  `;
-
-  try {
-    const response = await fetch(`${baseUrl}api/sponsoursgraphql`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query }),
-    });
-
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-
-    const result = await response.json();
-    return result.data.sponsours;
-  } catch (error) {
-    console.error('Error fetching sponsors:', error);
-    return [];
-  }
-}
-
-function Sponsours() {
-  const [sponsorsData, setSponsorsData] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') { // Ensures it's only running on the client
-      getSponsors().then((data) => {
-        setSponsorsData(data);
-        setLoading(false);
-      });
-    }
-  }, []);
+    `;
   
-
-  if (loading) {
-    return <Loading />;
+    try {
+      const response = await fetch(`${baseUrl}api/sponsoursgraphql`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      const result = await response.json();
+      return result.data.sponsours;
+    } catch (error) {
+      console.error('Error fetching sponsors:', error);
+      return [];
+    }
   }
+  const sponsorsData = await getSponsors();
 
   return (
     <div className={styles.sponsorsPage}>
@@ -69,12 +53,11 @@ function Sponsours() {
                 <div className={styles.sponsorLogo}>
                   {sponsor.image ? (
                     <Image
-                      src={sponsor.imag}
+                      src={sponsor.image}
                       alt={sponsor.name}
                       width={150}
                       height={100}
                       style={{ objectFit: 'contain' }}
-                      
                     />
                   ) : (
                     <div className={styles.sponsorNameFallback}>{sponsor.name}</div>
