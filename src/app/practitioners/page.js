@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import Link from "next/link";
 import styles from "./practitioners.module.css";
 import Image from "next/image";

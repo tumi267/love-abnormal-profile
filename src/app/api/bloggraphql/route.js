@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
   // app/api/bloggraphql/route.js
   import { ApolloServer } from '@apollo/server';
   import { startServerAndCreateNextHandler } from '@as-integrations/next';

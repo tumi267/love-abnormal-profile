@@ -117,7 +117,7 @@ const resolvers = {
     }
   }
 };
-
+export const dynamic = 'force-dynamic';
 const server = new ApolloServer({
   typeDefs,
   resolvers,
