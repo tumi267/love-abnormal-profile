@@ -1,5 +1,5 @@
 import React from 'react'
-
+export const dynamic = 'force-dynamic';
 function notfound() {
   return (
     <div>
