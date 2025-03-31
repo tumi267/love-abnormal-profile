@@ -1,4 +1,5 @@
-export const dynamic = 'force-dynamic'
+// app/contact/page.js
+export const dynamic = 'force-dynamic';
 
 import React from 'react';
 import Link from 'next/link';
@@ -17,12 +18,13 @@ async function getContactData() {
   `;
 
   try {
-    const response = await fetch('/api/contactgraphql', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/contactgraphql`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ query }),
+      cache: 'no-store'
     });
 
     if (!response.ok) {
@@ -30,34 +32,20 @@ async function getContactData() {
     }
 
     const result = await response.json();
-    return result.data.contact;
+    return result.data?.contact || null;
   } catch (error) {
     console.error('Error fetching contact data:', error);
     return null;
   }
 }
 
-function ContactPage() {
-  const [contactData, setContactData] = React.useState(null);
-  const [loading, setLoading] = React.useState(true);
-
-  React.useEffect(() => {
-    async function fetchData() {
-      const data = await getContactData();
-      setContactData(data);
-      setLoading(false);
-    }
-    fetchData();
-  }, []);
-
-  if (loading) {
-    return <div className={styles.loading}>Loading contact information...</div>;
-  }
+export default async function ContactPage() {
+  const contactData = await getContactData();
 
   // Fallback values if no contact data is available
-  const whatsappNumber = contactData?.whatsapp ;
-  const email = contactData?.email;
-  const address = contactData?.address;
+  const whatsappNumber = contactData?.whatsapp || '';
+  const email = contactData?.email || '';
+  const address = contactData?.address || '';
 
   return (
     <div className={styles.container}>
@@ -66,26 +54,34 @@ function ContactPage() {
       <div className={styles.contactDetails}>
         <p>
           <strong>Email:</strong>{' '}
-          <Link href={`mailto:${email}`} className={styles.link}>
-            {email}
-          </Link>
+          {email ? (
+            <Link href={`mailto:${email}`} className={styles.link}>
+              {email}
+            </Link>
+          ) : (
+            <span className={styles.unavailable}>Not available</span>
+          )}
         </p>
 
         <p>
           <strong>WhatsApp:</strong>{' '}
-          <Link
-            href={`https://wa.me/${whatsappNumber}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.link}
-          >
-            Chat on WhatsApp
-          </Link>
+          {whatsappNumber ? (
+            <Link
+              href={`https://wa.me/${whatsappNumber}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.link}
+            >
+              Chat on WhatsApp
+            </Link>
+          ) : (
+            <span className={styles.unavailable}>Not available</span>
+          )}
         </p>
       </div>
 
       <div className={styles.mapContainer}>
-        <h3>{address}</h3>
+        <h3>{address || 'Our Location'}</h3>
         <iframe
           className={styles.map}
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3580.04137469393!2d28.054315315321!3d-26.107566583442!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e9573c3f3b2f0b5%3A0x4f5f8f5b9f5b9f5b!2sSandton%2C%20Johannesburg%2C%20South%20Africa!5e0!3m2!1sen!2sus!4v1611818169804!5m2!1sen!2sus"
@@ -97,5 +93,3 @@ function ContactPage() {
     </div>
   );
 }
-
-export default ContactPage;
