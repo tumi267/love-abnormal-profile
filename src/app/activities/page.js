@@ -21,7 +21,7 @@ async function getEvents() {
   `;
 
   try {
-    const response = await fetch('api/eventsgraphql', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}api/eventsgraphql`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

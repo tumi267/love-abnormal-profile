@@ -22,7 +22,7 @@ async function getPractitioners() {
   `;
 
   try {
-    const response = await fetch('api/practitionersgraphql', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}api/practitionersgraphql`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
