@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import React from 'react';
 import Hero from '../components/Hero/Hero';
 import Search from '../components/search/Search';
