@@ -13,7 +13,7 @@ function EventCard({ event,typeArticle=false}) {
         {event?.image && regex.test(event.image)&&<Image src={event.image} alt={event.title} width={300} height={200} />}
       </div>
       <div className={styles.content}>
-        {event.title&&<h3>{event.title}</h3>}
+        {event.title&&<h3 className={styles.title}>{event.title}</h3>}
         {event.date&&<p className={styles.date}>{event.date} • {event.location}</p>}
         {event.description&&<p className={styles.description}>{event.description}</p>}
         {event.ticketLink&&<Link href={event.ticketLink} target="_blank" className={styles.ticketButton}>

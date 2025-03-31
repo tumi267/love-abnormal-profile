@@ -21,9 +21,12 @@
     padding: 16px;
     display: flex;
     flex-direction: column;
+    color: black;
   }
   
-
+  .title{
+    color: black;
+  }
   
   .date {
     font-size: 14px;

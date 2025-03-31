@@ -1,4 +1,4 @@
-// app/donations/page.js
+export const dynamic = 'force-dynamic';
 import styles from './donations.module.css'
 export default function DonationsPage() {
 
