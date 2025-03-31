@@ -1,89 +1,77 @@
-'use client';
+// app/donations/page.js
+'use client'; // Still needed for client-side interactions
 
 import React, { useState } from 'react';
 import styles from './donations.module.css';
-import jwt from 'jsonwebtoken'; // Ensure jwt is installed
+import jwt from 'jsonwebtoken';
 
-function DonationsPage() {
-  const [amount, setAmount] = useState('100'); // Default amount to be set
+// This can remain a client component since it handles form submission
+export default function DonationsPage() {
+  const [amount, setAmount] = useState('100');
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
 
-  // Handle donation submission
   const handleDonateClick = async (e) => {
-    e.preventDefault(); // Prevent immediate form submission
+    e.preventDefault();
     setIsLoading(true);
 
-    // Fetch API details
-    const fetchApiDetails = async () => {
-      const query = `
-        query GetApis {
-          getApis {
-            id
-            api
-            token
-          }
-        }
-      `;
+    try {
+      // Fetch API details
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/apiregistrationgraphql`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          query: `
+            query GetApis {
+              getApis {
+                id
+                api
+                token
+              }
+            }
+          `
+        })
+      });
 
-      try {
-        const response = await fetch('/api/apiregistrationgraphql', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ query }),
-        });
+      const result = await response.json();
 
-        const result = await response.json();
-
-        if (result.errors) {
-          throw new Error(result.errors[0].message);
-        }
-
-        if (result.data.getApis) {
-          // Decode the JWT for each API to get apiKey and apiId
-          const apiDetails = result.data.getApis.map((api) => {
-            const decoded = jwt.decode(api.token);
-            return {
-              id: api.id,
-              api: api.api,
-              apiKey: decoded.apiKey,
-              apiId: decoded.apiId,
-            };
-          });
-
-          const payfastApi = apiDetails.find((api) => api.api === 'payfast');
-          if (payfastApi) {
-            const { apiKey, apiId } = payfastApi;
-
-            // Proceed with donation if PayFast credentials are found
-            const formData = {
-              merchant_id: apiId,
-              merchant_key: apiKey,
-              return_url: `${baseUrl}donation/thank-you`,
-              cancel_url: `${baseUrl}donation/cancel`,
-              amount: amount,
-              item_name: 'Donation to Our Cause',
-            };
-
-            // Redirect to PayFast for processing
-            window.location.href = `https://sandbox.payfast.co.za/eng/process?merchant_id=${formData.merchant_id}&merchant_key=${formData.merchant_key}&return_url=${formData.return_url}&cancel_url=${formData.cancel_url}&amount=${formData.amount}&item_name=${formData.item_name}`;
-          } else {
-            setMessage('PayFast API credentials not found.');
-          }
-        } else {
-          setMessage('No APIs found.');
-        }
-      } catch (error) {
-        setMessage(`Error: ${error.message}`);
-      } finally {
-        setIsLoading(false);
+      if (result.errors) {
+        throw new Error(result.errors[0].message);
       }
-    };
 
-    // Trigger the API fetching before donation submission
-    fetchApiDetails();
+      if (!result.data?.getApis) {
+        throw new Error('No APIs found');
+      }
+
+      // Find and decode PayFast token
+      const payfastApi = result.data.getApis.find(api => api.api === 'payfast');
+      if (!payfastApi) {
+        throw new Error('PayFast API credentials not found');
+      }
+
+      const decoded = jwt.decode(payfastApi.token);
+      if (!decoded?.apiKey || !decoded?.apiId) {
+        throw new Error('Invalid PayFast token');
+      }
+
+      // Prepare PayFast redirect
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+      const formData = new URLSearchParams();
+      formData.append('merchant_id', decoded.apiId);
+      formData.append('merchant_key', decoded.apiKey);
+      formData.append('return_url', `${baseUrl}/donation/thank-you`);
+      formData.append('cancel_url', `${baseUrl}/donation/cancel`);
+      formData.append('amount', amount);
+      formData.append('item_name', 'Donation to Our Cause');
+      formData.append('email_address', e.target.email_address.value);
+
+      // Redirect to PayFast
+      window.location.href = `https://sandbox.payfast.co.za/eng/process?${formData.toString()}`;
+
+    } catch (error) {
+      setMessage(error.message);
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -93,7 +81,8 @@ function DonationsPage() {
         Your support helps us continue our mission. Please fill out the form below to donate:
       </p>
 
-      {/* PayFast Embedded Form */}
+      {message && <div className={styles.errorMessage}>{message}</div>}
+
       <form onSubmit={handleDonateClick}>
         <div className={styles.formGroup}>
           <label htmlFor="amount">Donation Amount (ZAR):</label>
@@ -101,9 +90,11 @@ function DonationsPage() {
             type="number"
             id="amount"
             name="amount"
+            min="10"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             className={styles.input}
+            required
           />
         </div>
 
@@ -119,7 +110,11 @@ function DonationsPage() {
           />
         </div>
 
-        <button type="submit" className={styles.submitButton} disabled={isLoading}>
+        <button 
+          type="submit" 
+          className={styles.submitButton} 
+          disabled={isLoading}
+        >
           {isLoading ? 'Processing...' : `Donate R${amount}`}
         </button>
       </form>
@@ -130,5 +125,3 @@ function DonationsPage() {
     </div>
   );
 }
-
-export default DonationsPage;
