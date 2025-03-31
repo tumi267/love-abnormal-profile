@@ -1,78 +1,6 @@
 // app/donations/page.js
-'use client'; // Still needed for client-side interactions
-
-import React, { useState } from 'react';
-import styles from './donations.module.css';
-import jwt from 'jsonwebtoken';
-
-// This can remain a client component since it handles form submission
+import styles from './donations.module.css'
 export default function DonationsPage() {
-  const [amount, setAmount] = useState('100');
-  const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState('');
-
-  const handleDonateClick = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    try {
-      // Fetch API details
-      const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/apiregistrationgraphql`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          query: `
-            query GetApis {
-              getApis {
-                id
-                api
-                token
-              }
-            }
-          `
-        })
-      });
-
-      const result = await response.json();
-
-      if (result.errors) {
-        throw new Error(result.errors[0].message);
-      }
-
-      if (!result.data?.getApis) {
-        throw new Error('No APIs found');
-      }
-
-      // Find and decode PayFast token
-      const payfastApi = result.data.getApis.find(api => api.api === 'payfast');
-      if (!payfastApi) {
-        throw new Error('PayFast API credentials not found');
-      }
-
-      const decoded = jwt.decode(payfastApi.token);
-      if (!decoded?.apiKey || !decoded?.apiId) {
-        throw new Error('Invalid PayFast token');
-      }
-
-      // Prepare PayFast redirect
-      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
-      const formData = new URLSearchParams();
-      formData.append('merchant_id', decoded.apiId);
-      formData.append('merchant_key', decoded.apiKey);
-      formData.append('return_url', `${baseUrl}/donation/thank-you`);
-      formData.append('cancel_url', `${baseUrl}/donation/cancel`);
-      formData.append('amount', amount);
-      formData.append('item_name', 'Donation to Our Cause');
-      formData.append('email_address', e.target.email_address.value);
-
-      // Redirect to PayFast
-      window.location.href = `https://sandbox.payfast.co.za/eng/process?${formData.toString()}`;
-
-    } catch (error) {
-      setMessage(error.message);
-      setIsLoading(false);
-    }
-  };
 
   return (
     <div className={styles.container}>
@@ -81,9 +9,11 @@ export default function DonationsPage() {
         Your support helps us continue our mission. Please fill out the form below to donate:
       </p>
 
-      {message && <div className={styles.errorMessage}>{message}</div>}
-
-      <form onSubmit={handleDonateClick}>
+      <form 
+        method="POST" 
+        action="/api/donation"
+        className="payfastForm"
+      >
         <div className={styles.formGroup}>
           <label htmlFor="amount">Donation Amount (ZAR):</label>
           <input
@@ -91,10 +21,10 @@ export default function DonationsPage() {
             id="amount"
             name="amount"
             min="10"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            className={styles.input}
+            step="1"
+            defaultValue="100"
             required
+            className={styles.input}
           />
         </div>
 
@@ -103,24 +33,23 @@ export default function DonationsPage() {
           <input
             type="email"
             id="email"
-            name="email_address"
+            name="email"
             placeholder="Enter your email"
             required
             className={styles.input}
           />
         </div>
 
-        <button 
-          type="submit" 
-          className={styles.submitButton} 
-          disabled={isLoading}
-        >
-          {isLoading ? 'Processing...' : `Donate R${amount}`}
+        {/* Hidden field for payment processor */}
+        <input type="hidden" name="processor" value="payfast" />
+
+        <button type="submit" className={styles.submitButton}>
+          Donate Now
         </button>
       </form>
 
       <p className={styles.note}>
-        You will be redirected to PayFast to complete your donation securely.
+        You will be redirected to our secure payment processor to complete your donation.
       </p>
     </div>
   );

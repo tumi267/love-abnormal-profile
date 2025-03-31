@@ -53,7 +53,7 @@ export default async function AboutPage() {
     return (
       <div className={styles.errorContainer}>
         <h2>Unable to load content</h2>
-        <p>process.env.NEXT_PUBLIC_SITE_URL</p>
+        <p>please try refresh or come back later</p>
       </div>
     );
   }

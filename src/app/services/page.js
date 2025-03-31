@@ -83,7 +83,7 @@ async function Page() {
             </p>
           </div>
           <div className={styles.bentogrid}>
-            {firstService.services.map((item) => (
+            {firstService?.services.map((item) => (
               <div key={item.id} className={styles.card}>
                 <span className={styles.emoji}>{item.emoji}</span>
                 <h3>{item.title}</h3>

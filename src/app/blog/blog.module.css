@@ -8,6 +8,9 @@
     gap: 2em;
     margin-top: 48px;
 }
+.categoryCard{
+    text-decoration: none;
+}
 .header{
     margin-top: 48px;
     margin-bottom: 48px;
