@@ -1,105 +1,86 @@
-'use client'
-import { useState, useEffect } from 'react'
-import Carousel from '../components/ThreeDCarosel/ThreeDCarosel'
-import EventCard from '../components/EventCard/EventCrad'
-import styles from './blog.module.css'
-import Loading from '../loading'
+// app/blog/page.js
+export const dynamic = 'force-dynamic';
 
-function BlogPage() {
-  const [articles, setArticles] = useState([])
-  const [categories, setCategories] = useState([])
-  const [selectedCategory, setSelectedCategory] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(null)
+import React from 'react';
+import Link from 'next/link';
+import styles from './blog.module.css';
+import Carousel from '../components/ThreeDCarosel/ThreeDCarosel';
+import EventCard from '../components/EventCard/EventCrad';
 
-  useEffect(() => {
-    const abortController = new AbortController()
-    
-    const fetchData = async () => {
-      try {
-        setIsLoading(true)
-        setError(null)
-
-        // Fetch categories
-        const categoriesResponse = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/bloggraphql`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            query: `
-              query {
-                categories {
-                  id
-                  title
-                  description
-                  image
-                  href
-                }
+async function getBlogData(selectedCategory = null) {
+  try {
+    // Fetch categories and articles in parallel
+    const [categoriesResponse, articlesResponse] = await Promise.all([
+      fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/bloggraphql`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          query: `
+            query {
+              categories {
+                id
+                title
+                description
+                image
+                href
               }
-            `
-          }),
-          signal: abortController.signal
-        })
-
-        if (!categoriesResponse.ok) {
-          throw new Error('Failed to fetch categories')
-        }
-
-        const categoriesResult = await categoriesResponse.json()
-        setCategories(categoriesResult.data?.categories || [])
-
-        // Fetch articles
-        const articlesQuery = selectedCategory 
-          ? `articles(category: "${selectedCategory}", limit: 10)`
-          : 'articles(limit: 10)'
-
-        const articlesResponse = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/bloggraphql`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            query: `
-              query {
-                ${articlesQuery} {
-                  id
-                  title
-                  category
-                  preview
-                  date
-                  href
-                  image
-                }
+            }
+          `
+        }),
+        cache: 'no-store'
+      }),
+      fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/bloggraphql`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          query: `
+            query {
+              ${selectedCategory ? `articles(category: "${selectedCategory}", limit: 10)` : 'articles(limit: 10)'} {
+                id
+                title
+                category
+                preview
+                date
+                href
+                image
               }
-            `
-          }),
-          signal: abortController.signal
-        })
+            }
+          `
+        }),
+        cache: 'no-store'
+      })
+    ]);
 
-        if (!articlesResponse.ok) {
-          throw new Error('Failed to fetch articles')
-        }
-
-        const articlesResult = await articlesResponse.json()
-        setArticles(articlesResult.data?.articles || [])
-      } catch (err) {
-        if (err.name !== 'AbortError') {
-          setError('Failed to fetch data. Please try again later.')
-          console.error('Error fetching data:', err)
-        }
-      } finally {
-        setIsLoading(false)
-      }
+    if (!categoriesResponse.ok || !articlesResponse.ok) {
+      throw new Error('Failed to fetch blog data');
     }
 
-    fetchData()
+    const [categoriesResult, articlesResult] = await Promise.all([
+      categoriesResponse.json(),
+      articlesResponse.json()
+    ]);
 
-    return () => abortController.abort()
-  }, [selectedCategory])
-
-  const handleCategorySelect = (categoryTitle) => {
-    setSelectedCategory(prev => prev === categoryTitle ? null : categoryTitle)
+    return {
+      categories: categoriesResult.data?.categories || [],
+      articles: articlesResult.data?.articles || []
+    };
+  } catch (error) {
+    console.error('Error fetching blog data:', error);
+    return {
+      categories: [],
+      articles: [],
+      error: 'Failed to load blog data'
+    };
   }
+}
 
-  if (isLoading) return <Loading />
-  if (error) return <div className={styles.error}>{error}</div>
+export default async function BlogPage({ searchParams }) {
+  const selectedCategory = searchParams?.category || null;
+  const { categories, articles, error } = await getBlogData(selectedCategory);
+
+  if (error) {
+    return <div className={styles.error}>{error}</div>;
+  }
 
   return (
     <div className={styles.container}>
@@ -121,16 +102,16 @@ function BlogPage() {
         <div className={styles.card_contain}>
           {categories.length > 0 ? (
             categories.map((category) => (
-              <div 
+              <Link 
                 key={category.id} 
+                href={`/blog?category=${category.title}`}
                 className={`${styles.categoryCard} ${selectedCategory === category.title ? styles.selected : ''}`}
-                onClick={() => handleCategorySelect(category.title)}
               >
                 <EventCard 
                   event={category}
                   isSelected={selectedCategory === category.title}
                 />
-              </div>
+              </Link>
             ))
           ) : (
             <p className={styles.noCategories}>No categories available</p>
@@ -138,7 +119,5 @@ function BlogPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-
-export default BlogPage
